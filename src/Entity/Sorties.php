@@ -98,6 +98,12 @@ class Sorties
      */
     private $etatsNoEtat;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieux")
+     * @ORM\JoinColumn(nullable=false, name="Lieux", referencedColumnName="noLieu")
+     */
+    private $lieux;
+
     public function getNoSortie(): ?int
     {
         return $this->noSortie;
@@ -235,5 +241,33 @@ class Sorties
         return $this;
     }
 
+    public function getLieux(): ?Lieux
+    {
+        return $this->lieux;
+    }
+
+    public function setLieux(?Lieux $lieux): self
+    {
+        $this->lieux = $lieux;
+
+        return $this;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+    
 
 }

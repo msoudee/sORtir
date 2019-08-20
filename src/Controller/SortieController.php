@@ -38,7 +38,7 @@ class SortieController extends AbstractController
         $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+        if ($sortieForm->isSubmitted()) {
 
             $em->persist($sortie);
             $em->flush();
@@ -48,4 +48,6 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
     }
+
+
 }
