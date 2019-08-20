@@ -5,15 +5,16 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/sortie")
+ */
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/sortie", name="sortie")
+     * @Route("/lister", name="sortie_lister")
      */
-    public function index()
+    public function lister()
     {
-        return $this->render('sortie/index.html.twig', [
-            'controller_name' => 'SortieController',
-        ]);
+        return $this->render('sortie/sortie_lister.html.twig');
     }
 }
