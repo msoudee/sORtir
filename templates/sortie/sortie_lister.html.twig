@@ -3,66 +3,63 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
+   <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
+   <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
 
-   <div class="container">
-      <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
-      <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
+   <form>
+      <fieldset>
+         <legend>Filtrer les sorties</legend>
 
-      <form>
-         <fieldset>
-            <legend>Filtrer les sorties</legend>
+         <div>
+            Site :
+            <select name="site">
+               <option>Saint Herblain</option>
+               <option>Rennes</option>
+               <option>Cherbourg</option>
+               <option>Limoges</option>
+               <option>Nice</option>
+            </select>
+         </div>
 
+         <div>
+            Le nom de la sortie contient :
+            <input type="search" placeholder="Rechercher">
+         </div>
+
+         <div>
+             Entre
+             <input type="text" placeholder="Date de début">
+              et
+             <input type="text" placeholder="Date de fin">
+         </div>
+
+         <div>
             <div>
-               Site :
-               <select name="site">
-                  <option>Saint Herblain</option>
-                  <option>Rennes</option>
-                  <option>Cherbourg</option>
-                  <option>Limoges</option>
-                  <option>Nice</option>
-               </select>
+               <input type="checkbox" id="cbfiltre" name="sortie_orga">
+               <label>Sortie dont je suis l'organisateur/trice</label>
             </div>
 
             <div>
-               Le nom de la sortie contient :
-               <input type="search" placeholder="Rechercher">
+               <input type="checkbox" id="cbfiltre" name="sortie_inscrit">
+               <label>Sortie auxquelles je suis inscrit/e</label>
             </div>
 
             <div>
-                Entre
-                <input type="text" placeholder="Date de début">
-                 et
-                <input type="text" placeholder="Date de fin">
+               <input type="checkbox" id="cbfiltre" name="sortie_non_inscrit">
+               <label>Sortie auxquelles je ne suis pas inscrit/e</label>
             </div>
 
             <div>
-               <div>
-                  <input type="checkbox" id="cbfiltre" name="sortie_orga">
-                  <label>Sortie dont je suis l'organisateur/trice</label>
-               </div>
-
-               <div>
-                  <input type="checkbox" id="cbfiltre" name="sortie_inscrit">
-                  <label>Sortie auxquelles je suis inscrit/e</label>
-               </div>
-
-               <div>
-                  <input type="checkbox" id="cbfiltre" name="sortie_non_inscrit">
-                  <label>Sortie auxquelles je ne suis pas inscrit/e</label>
-               </div>
-
-               <div>
-                  <input type="checkbox" id="cbfiltre" name="sortie_passee">
-                  <label>Sortie passées</label>
-               </div>
+               <input type="checkbox" id="cbfiltre" name="sortie_passee">
+               <label>Sortie passées</label>
             </div>
+         </div>
 
-            <input type="submit" value="Rechercher">
-         </fieldset>
-      </form>
+         <input type="submit" value="Rechercher">
+      </fieldset>
+   </form>
 
-      <div>
-         <input type="button" value="Créer une sortie">
-      </div>
+   <div>
+      <input type="button" value="Créer une sortie">
    </div>
 {% endblock %}

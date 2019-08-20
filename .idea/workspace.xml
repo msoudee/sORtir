@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36b4e4dd-50f1-4025-a54c-86d368d82d0d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/SortieController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SortieController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -169,6 +167,10 @@
       <workItem from="1566220049520" duration="1380000" />
       <workItem from="1566286307713" duration="81000" />
       <workItem from="1566286421358" duration="6978000" />
+      <workItem from="1566295780388" duration="3000" />
+      <workItem from="1566295796106" duration="5000" />
+      <workItem from="1566296029680" duration="26000" />
+      <workItem from="1566296085244" duration="4000" />
     </task>
     <servers />
   </component>
