@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,6 +16,10 @@ class SortieController extends AbstractController
      */
     public function lister()
     {
-        return $this->render('sortie/sortie_lister.html.twig');
+        $dateDuJour = new DateTime();
+        $dateDuJour = $dateDuJour->format("d/m/Y");
+        $participant = "Maxence S.";
+
+        return $this->render('sortie/sortie_lister.html.twig', ["dateDuJour"=>$dateDuJour, "participant"=>$participant]);
     }
 }
