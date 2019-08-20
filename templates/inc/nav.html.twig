@@ -29,7 +29,12 @@
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Se connecter</a>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+                 <a class="nav-link" href="{{ path('app_login')}}">Se connecter</a>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link" href="{{ path('app_logout')}}">Logout</a>
+                {% endif %}
             </li>
         </ul>
     </div>
