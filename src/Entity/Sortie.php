@@ -72,12 +72,14 @@ class Sortie
      */
     private $organisateur;
 
+    private $nbInscriptions;
+
+    private $inscrit;
+
     public function getId(): ?int
     {
         return $this->id;
     }
-
-
 
     public function getNom(): ?string
     {
@@ -197,5 +199,25 @@ class Sortie
         $this->organisateur = $organisateur;
 
         return $this;
+    }
+
+    public function getNbInscriptions()
+    {
+        return $this->nbInscriptions;
+    }
+
+    public function setNbInscriptions($nbInscriptions): void
+    {
+        $this->nbInscriptions = $nbInscriptions;
+    }
+
+    public function getInscrit(): bool
+    {
+        return $this->inscrit;
+    }
+
+    public function setInscrit(bool $inscrit)
+    {
+        $this->inscrit = $inscrit;
     }
 }

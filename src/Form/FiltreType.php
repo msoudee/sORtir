@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Site;
 use App\Entity\Sortie;
-use Doctrine\DBAL\Types\StringType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,8 +23,12 @@ class FiltreType extends AbstractType
                 }
             ])
             ->add('nom')
-            ->add('dateDebut')
-            ->add('dateCloture')
+            ->add('dateDebut', DateType::class, [
+                'widget' => 'single_text'
+            ])
+            ->add('dateCloture', DateType::class, [
+                'widget' => 'single_text'
+            ])
         ;
     }
 
