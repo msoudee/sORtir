@@ -17,9 +17,9 @@ class FiltreType extends AbstractType
         $builder
             ->add('site', EntityType::class, [
                 'class'=>Site::class,
-                'placeholder'=>"Choisir un site organisateur",
+                'placeholder'=>"Choisir un site",
                 'choice_label'=>function(Site $site){
-                    return $site->getNomSite();
+                    return $site->getLibelle();
                 }
             ])
             ->add('nom')

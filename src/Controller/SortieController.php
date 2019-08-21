@@ -22,8 +22,11 @@ class SortieController extends AbstractController
     public function lister(Request $request)
     {
         $dateDuJour = new DateTime();
-        $dateDuJour = $dateDuJour->format("d/m/Y");
-        $participant = "Maxence S.";
+
+        $em = $this->getDoctrine()->getManager();
+        $repoSortie = $em->getRepository(Sortie::class);
+
+        $sorties = $repoSortie->findAll();
 
         $filtre = new Sortie();
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
@@ -33,7 +36,12 @@ class SortieController extends AbstractController
 
         }
 
-        return $this->render('sortie/sortie_lister.html.twig', ["formFiltre"=>$formFiltre->createView(), "dateDuJour"=>$dateDuJour, "participant"=>$participant]);
+        return $this->render('sortie/sortie_lister.html.twig', [
+            "formFiltre"=>$formFiltre->createView(),
+            "dateDuJour"=>$dateDuJour->format("d/m/Y"),
+            "participant"=>$this->getUser()->getUserName(),
+            "sorties"=>$sorties
+        ]);
     }
 
     /**
