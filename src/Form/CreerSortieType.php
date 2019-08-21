@@ -17,6 +17,7 @@ class CreerSortieType extends AbstractType
     {
         $builder
             ->add('nom')
+
             ->add('dateDebut',DateTimeType::class, [
                 'widget' =>'single_text'
             ])

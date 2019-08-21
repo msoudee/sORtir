@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Etat;
-use App\Entity\Inscription;
+use App\Entity\Lieu;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\User;
@@ -13,6 +13,7 @@ use App\Form\CreerSortieType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -117,6 +118,40 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+    }
+
+    /**
+     * @Route("/ajax_lieu", name="sortie_ajax")
+     */
+    public function ajaxAction(Request $request)
+    {
+        /* on récupère la valeur envoyée par la vue */
+        $idLieu = $request->request->get('nomLieu');
+
+        $em = $this->getDoctrine()->getManager();
+        $repoLieu = $em->getRepository(Lieu::class);
+        $lieu = $repoLieu->find($idLieu);
+        $rue = $lieu->getRue();
+        $latitude = $lieu->getLatitude();
+        $longitude = $lieu->getLongitude();
+        $ville = $lieu->getVille();
+        $nomVille =$ville->getNom();
+        $codePostal = $ville->getCodePostal();
+
+        /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
+         * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
+         */
+        $response = new Response(json_encode(array(
+            'rue' => $rue,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'nomVille' => $nomVille,
+            'codePostal' =>$codePostal
+        )));
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
 }
