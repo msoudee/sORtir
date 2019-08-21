@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Etat;
+use App\Entity\Inscription;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
@@ -21,29 +23,66 @@ class SortieController extends AbstractController
     /**
      * @Route("/lister", name="sortie_lister")
      */
-    public function lister(Request $request)
+    public function lister(/*Request $request*/)
     {
-        $dateDuJour = new DateTime();
+        // Récupération de toutes les sorties enregistrées en BDD
+        $sorties = $this->getSorties();
 
-        $em = $this->getDoctrine()->getManager();
-        $repoSortie = $em->getRepository(Sortie::class);
-
-        $sorties = $repoSortie->findAll();
-
+        // Création du formulaire pour filtrer les recherches
         $filtre = new Sortie();
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
-
-        $formFiltre->handleRequest($request);
+        /*$formFiltre->handleRequest($request);
         if ($formFiltre->isSubmitted() && $formFiltre->isValid()) {
 
-        }
+        }*/
 
         return $this->render('sortie/sortie_lister.html.twig', [
             "formFiltre" => $formFiltre->createView(),
-            "dateDuJour" => $dateDuJour->format("d/m/Y"),
-            "participant" => $this->getUser()->getUserName(),
+            "dateDuJour" => $this->getDateActuelle(),
+            "participant" => $this->getNomUser(),
             "sorties" => $sorties
         ]);
+    }
+
+    private function getDateActuelle(){
+        $dateDuJour = new DateTime();
+        return $dateDuJour->format("d/m/Y");
+    }
+
+    private function getNomUser(){
+        $userConnecte = $this->getUser();
+        if(strlen($userConnecte->getNom()) > 0 and strlen($userConnecte->getPrenom()) > 0){
+            $userConnecte = $userConnecte->getPrenom().' '.substr($userConnecte->getNom(), 0, 1).'.';
+        } else {
+            $userConnecte = $userConnecte->getUsername();
+        }
+        return $userConnecte;
+    }
+
+    private function getSorties(){
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Sortie::class);
+
+        // Récupération du nombre d'inscriptions pour chaque sorties récupérées
+        return $this->getNombreInscriptions($repo->findAll());
+    }
+
+    private function getNombreInscriptions(array $sorties){
+        $em = $this->getDoctrine()->getManager();
+        $repoInscription = $em->getRepository(Inscription::class);
+
+        foreach ($sorties as $sortie) {
+            $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
+            $sortie->setNbInscriptions(sizeof($tmp));
+            $sortie->setInscrit(false);
+
+            foreach ($tmp as $inscription){
+                if($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()){
+                    $sortie->setInscrit(true);
+                }
+            }
+        }
+        return $sorties;
     }
 
     /**
@@ -79,6 +118,5 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
     }
-
 
 }
