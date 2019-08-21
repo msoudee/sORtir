@@ -20,7 +20,7 @@ class CreerSortieType extends AbstractType
             ->add('duree')
             ->add('datecloture')
             ->add('nbinscriptionsmax')
-            ->add('descriptioninfos',TextareaType::class)
+            ->add('description',TextareaType::class)
             ->add('lieu', EntityType::class, [
                 'class'=>Lieu::class,
                 'placeholder'=>"- Choisir un lieu -",
