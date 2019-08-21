@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Lieux;
-use App\Entity\Sorties;
+use App\Entity\Lieu;
+use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -21,11 +21,11 @@ class CreerSortieType extends AbstractType
             ->add('datecloture')
             ->add('nbinscriptionsmax')
             ->add('descriptioninfos',TextareaType::class)
-            ->add('lieux', EntityType::class, [
-                'class'=>Lieux::class,
+            ->add('lieu', EntityType::class, [
+                'class'=>Lieu::class,
                 'placeholder'=>"- Choisir un lieu -",
-                'choice_label'=>function(Lieux $lieux){
-                    return $lieux->getNomLieu();
+                'choice_label'=>function(Lieu $lieu){
+                    return $lieu->getNom();
                 }
             ])
 
@@ -35,7 +35,7 @@ class CreerSortieType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Sorties::class,
+            'data_class' => Sortie::class,
         ]);
     }
 }

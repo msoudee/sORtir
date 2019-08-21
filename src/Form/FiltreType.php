@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Sites;
-use App\Entity\Sorties;
+use App\Entity\Site;
+use App\Entity\Sortie;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,11 +15,11 @@ class FiltreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('siteOrganisateur', EntityType::class, [
-                'class'=>Sites::class,
+            ->add('site', EntityType::class, [
+                'class'=>Site::class,
                 'placeholder'=>"Choisir un site organisateur",
-                'choice_label'=>function(Sites $sites){
-                    return $sites->getNomSite();
+                'choice_label'=>function(Site $site){
+                    return $site->getNomSite();
                 }
             ])
             ->add('nom')
@@ -31,7 +31,7 @@ class FiltreType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Sorties::class,
+            'data_class' => Sortie::class,
         ]);
     }
 }

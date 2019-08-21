@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Sorties;
+use App\Entity\Sortie;
 use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
@@ -25,7 +25,7 @@ class SortieController extends AbstractController
         $dateDuJour = $dateDuJour->format("d/m/Y");
         $participant = "Maxence S.";
 
-        $filtre = new Sorties();
+        $filtre = new Sortie();
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
 
         $formFiltre->handleRequest($request);
@@ -42,7 +42,7 @@ class SortieController extends AbstractController
     public function creer(EntityManagerInterface $em, Request $request)
     {
 
-        $sortie = new Sorties();
+        $sortie = new Sortie();
 
         $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
         $sortieForm->handleRequest($request);
