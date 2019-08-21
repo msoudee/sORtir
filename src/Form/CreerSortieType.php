@@ -6,6 +6,7 @@ use App\Entity\Lieu;
 use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,9 +17,13 @@ class CreerSortieType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('datedebut')
+            ->add('dateDebut',DateTimeType::class, [
+                'widget' =>'single_text'
+            ])
             ->add('duree')
-            ->add('datecloture')
+            ->add('dateCloture',DateTimeType::class, [
+                'widget' =>'single_text'
+            ])
             ->add('nbinscriptionsmax')
             ->add('description',TextareaType::class)
             ->add('lieu', EntityType::class, [
