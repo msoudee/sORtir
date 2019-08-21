@@ -4,10 +4,108 @@
 
 {% block body %}
 
-   <h1>Créer une sortie</h1>
+    <h1>Créer une sortie</h1>
 
-   {{ form_start(form_CreerSortie) }}
-   {{ form_widget(form_CreerSortie) }}
-   <button type="submit" class="btn btn-primary">Ajouter</button>
-   {{  form_end(form_CreerSortie) }}
+    {{ form_start(form_CreerSortie) }}
+    <div class="row">
+
+        <div class="col">
+            Nom de la sortie :
+            {{ form_widget(form_CreerSortie.nom) }}
+        </div>
+
+        <div class="col">
+            Ville organisatrice :
+            <label class="form-control"> texte </label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            Date et heure de la sortie :
+            {{ form_widget(form_CreerSortie.datedebut) }}
+        </div>
+
+        <div class="col">
+            Ville :
+            <label class="form-control"> ville </label>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Date limite inscription :
+            {{ form_widget(form_CreerSortie.datecloture) }}
+        </div>
+        <div class="col">
+            Lieu
+            {{ form_widget(form_CreerSortie.lieux) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            nombre de places :
+            {{ form_widget(form_CreerSortie.nbinscriptionsmax) }}
+        </div>
+        <div class="col">
+            Rue
+            <label class="form-control"> Rue </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            Durée :
+            {{ form_widget(form_CreerSortie.duree) }}
+        </div>
+        <div class="col">
+            Code Postal
+            <label class="form-control"> code postal valeur </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            Description et infos :
+            {{ form_widget(form_CreerSortie.descriptioninfos) }}
+        </div>
+        <div class="col">
+            Latitude
+            <label class="form-control"> Latitude </label>
+        </div>
+
+        <div class="col">
+            Longitude
+            <label class="form-control"> Longitude </label>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row mt-4">
+    <div class="col-md-4">
+        <button type="submit" class="btn-block btn-primary btn">Ajouter</button>
+    </div><div class="col-md-4">
+        <button type="submit" class="btn-block btn-primary btn">Ajouter</button>
+    </div><div class="col-md-4">
+        <button type="submit" class="btn-block btn-primary btn">Ajouter</button>
+    </div>
+
+    </div>
+
+
+
+    {{ form_end(form_CreerSortie) }}
 {% endblock %}

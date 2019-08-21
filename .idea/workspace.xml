@@ -3,7 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="36b4e4dd-50f1-4025-a54c-86d368d82d0d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SortieController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SortieController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Etats.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Inscriptions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Lieux.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Participants.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Sites.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Sorties.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Villes.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CreerSortieType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CreerSortieType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -134,13 +146,23 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/sortie" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp64\www\sORtir\templates\sortie" />
+      <recent name="C:\wamp64\www\sORtir\templates" />
+      <recent name="C:\wamp64\www\sORtir\public\img" />
+      <recent name="C:\wamp64\www\sORtir\templates\inc" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -171,6 +193,8 @@
       <workItem from="1566295796106" duration="5000" />
       <workItem from="1566296029680" duration="26000" />
       <workItem from="1566296085244" duration="4000" />
+      <workItem from="1566311599382" duration="1221000" />
+      <workItem from="1566370284717" duration="9308000" />
     </task>
     <servers />
   </component>

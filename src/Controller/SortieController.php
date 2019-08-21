@@ -40,6 +40,7 @@ class SortieController extends AbstractController
 
         if ($sortieForm->isSubmitted()) {
 
+
             $em->persist($sortie);
             $em->flush();
             $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
