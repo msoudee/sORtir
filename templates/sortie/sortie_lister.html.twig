@@ -32,12 +32,11 @@
          </div>
       </div>
 
-      <input class="button" type="submit" value="Rechercher">
+      <input class="btn btn-primary btn-block" type="submit" value="Rechercher">
 
       {{ form_end(formFiltre) }}
 
-
-
+      <br>
 
       <table class="table table-striped">
          <thead>
@@ -69,6 +68,7 @@
          </tbody>
       </table>
 
+      <a class="btn btn-success" href="{{ path('sortie_creer') }}">Créer une sortie</a>
 
    {% else %}
       <h1>VOUS N'ÊTES PAS CONNECTÉ</h1>
