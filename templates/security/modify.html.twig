@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form method="post">
+    <h1>Mon Profil</h1>
+        {{ form_start(modifyForm) }}
+            {{ form_row(modifyForm.username) }}
+            {{ form_row(modifyForm.prenom) }}
+            {{ form_row(modifyForm.nom) }}
+            {{ form_row(modifyForm.telephone) }}
+            {{ form_row(modifyForm.mail) }}
+            {{ form_row(modifyForm.password) }}
+            {{ form_row(modifyForm.site) }}
+            <button class="btn">Enregistrer</button>
+
+        {{ form_end(modifyForm) }}
+
+
+    </form>
+{% endblock %}
