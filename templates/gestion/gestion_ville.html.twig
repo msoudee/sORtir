@@ -1,0 +1,44 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Gestion des villes{% endblock %}
+
+{% block body %}
+    <h1>Gérer les villes</h1>
+
+    {{ form_start(searchCityForm) }}
+
+        <label>Rechercher une ville par nom :</label>
+        {{ form_widget(searchCityForm.nom) }}
+
+        <input type="submit" class="btn btn-outline-success" value="Rechercher">
+    {{ form_end(searchCityForm) }}
+
+
+    <br>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Ville</th>
+            <th scope="col">Code postal</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for ville in villes %}
+                <tr>
+                    <td>{{ ville.nom }}</td>
+                    <td>{{ ville.codePostal }}</td>
+                    <td><a class="btn btn-outline-danger" href="{{ path("gestion_ville_supprimer", {"id":ville.id}) }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                {{ form_start(newCityForm) }}
+                    <td>{{ form_widget(newCityForm.nom) }}</td>
+                    <td>{{ form_widget(newCityForm.codePostal) }}</td>
+                    <td><input type="submit" class="btn btn-outline-success" value="Enregistrer"></td>
+                {{ form_end(newCityForm) }}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

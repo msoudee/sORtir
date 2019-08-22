@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36b4e4dd-50f1-4025-a54c-86d368d82d0d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/sortie/sortie_modifier.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/gestion/gestion_ville.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/SortieController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SortieController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/CreerSortieType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CreerSortieType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/FiltreType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/FiltreType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/inc/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inc/nav.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -188,8 +188,8 @@
       <workItem from="1566296029680" duration="26000" />
       <workItem from="1566296085244" duration="4000" />
       <workItem from="1566311599382" duration="1221000" />
-      <workItem from="1566370284717" duration="21512000" />
-      <workItem from="1566456891547" duration="11463000" />
+      <workItem from="1566370284717" duration="9308000" />
+      <workItem from="1566457487281" duration="20421000" />
     </task>
     <servers />
   </component>

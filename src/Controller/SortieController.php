@@ -12,10 +12,13 @@ use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/sortie")
@@ -25,18 +28,46 @@ class SortieController extends AbstractController
     /**
      * @Route("/lister", name="sortie_lister")
      */
-    public function lister(/*Request $request*/)
+    public function lister(Request $request)
     {
         // Récupération de toutes les sorties enregistrées en BDD
         $sorties = $this->getSorties();
+        $sorties = $this->completerDonnesSorties($sorties);
 
         // Création du formulaire pour filtrer les recherches
         $filtre = new Sortie();
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
-        /*$formFiltre->handleRequest($request);
-        if ($formFiltre->isSubmitted() && $formFiltre->isValid()) {
-
-        }*/
+        $formFiltre->handleRequest($request);
+        if ($formFiltre->isSubmitted()) {
+            if(!is_null($filtre->getSite())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getSite() != $filtre->getSite()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getNom())){
+                foreach ($sorties as $sortie) {
+                    if(strpos($sortie->getNom(), $filtre->getNom()) === false ){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getDateDebut())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getDateDebut() < $filtre->getDateDebut()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getDateCloture())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getDateDebut() > $filtre->getDateCloture()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+        }
 
         return $this->render('sortie/sortie_lister.html.twig', [
             "formFiltre" => $formFiltre->createView(),
@@ -70,13 +101,18 @@ class SortieController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $repoSortie = $em->getRepository(Sortie::class);
-        $repoInscription = $em->getRepository(Inscription::class);
 
         // Récupération de toutes les sorties
         $sorties = $repoSortie->findAll();
 
+        return $sorties;
+    }
+
+    private function completerDonnesSorties($sorties){
         foreach ($sorties as $sortie) {
-            $tmp = $repoInscription->findBy(["sortie" => $sortie->getId()]);
+            $em = $this->getDoctrine()->getManager();
+            $repoInscription = $em->getRepository(Inscription::class);
+            $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
 
             // Enregistrement du nombre d'inscrit par sorties
             $sortie->setNbInscriptions(sizeof($tmp));
