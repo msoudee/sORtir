@@ -66,24 +66,72 @@ class SortieController extends AbstractController
 
     private function getSorties(){
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Sortie::class);
-
-        // Récupération du nombre d'inscriptions pour chaque sorties récupérées
-        return $this->getNombreInscriptions($repo->findAll());
-    }
-
-    private function getNombreInscriptions(array $sorties){
-        $em = $this->getDoctrine()->getManager();
+        $repoSortie = $em->getRepository(Sortie::class);
         $repoInscription = $em->getRepository(Inscription::class);
+
+        // Récupération de toutes les sorties
+        $sorties = $repoSortie->findAll();
 
         foreach ($sorties as $sortie) {
             $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
-            $sortie->setNbInscriptions(sizeof($tmp));
-            $sortie->setInscrit(false);
 
+            // Enregistrement du nombre d'inscrit par sorties
+            $sortie->setNbInscriptions(sizeof($tmp));
+
+            // Vérification sur les sorties si l'utilisateur courant est inscrit
+            $sortie->setInscrit(false);
             foreach ($tmp as $inscription){
                 if($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()){
                     $sortie->setInscrit(true);
+                }
+            }
+
+            // Paramètrage des actions en fonction de l'état de la sortie et de l'utilisateur
+            // Si l'utilisateur courant est l'organisateur
+            if($sortie->getOrganisateur() == $this->getUser()) {
+                switch ($sortie->getEtat()->getLibelle()){
+                    case "Ouverte":
+                    case "Clôturée":
+                        $sortie->setActions(["afficher", "annuler"]);
+                        break;
+                    case "En cours":
+                    case "Passée":
+                    case "Annulée":
+                        $sortie->setActions(["afficher"]);
+                        break;
+                    default :
+                        $sortie->setActions(["modifier", "publier"]);
+                        break;
+                }
+            }
+            // Si l'utilisateur est inscrit
+            else if ($sortie->getInscrit()) {
+                switch ($sortie->getEtat()->getLibelle()){
+                    case "Ouverte":
+                    case "Clôturée":
+                        $sortie->setActions(["afficher", "desister"]);
+                        break;
+                    case "En création":
+                        $sortie->setActions([]);
+                        break;
+                    default :
+                        $sortie->setActions(["afficher"]);
+                        break;
+                }
+            }
+            // Si l'utilisateur n'est pas inscrit
+            else if(!$sortie->getInscrit()) {
+                switch ($sortie->getEtat()->getLibelle()){
+                    case "Ouverte":
+                    case "Clôturée":
+                        $sortie->setActions(["afficher", "inscrire"]);
+                        break;
+                    case "En création":
+                        $sortie->setActions([]);
+                        break;
+                    default :
+                        $sortie->setActions(["afficher"]);
+                        break;
                 }
             }
         }

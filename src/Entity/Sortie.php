@@ -76,6 +76,8 @@ class Sortie
 
     private $inscrit;
 
+    private $actions;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -219,5 +221,21 @@ class Sortie
     public function setInscrit(bool $inscrit)
     {
         $this->inscrit = $inscrit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * @param mixed $actions
+     */
+    public function setActions($actions)
+    {
+        $this->actions = $actions;
     }
 }
