@@ -46,15 +46,17 @@ class SortieController extends AbstractController
         ]);
     }
 
-    private function getDateActuelle(){
+    private function getDateActuelle()
+    {
         $dateDuJour = new DateTime();
         return $dateDuJour->format("d/m/Y");
     }
 
-    private function getNomUser(){
+    private function getNomUser()
+    {
         $userConnecte = $this->getUser();
 
-        if(!is_null($userConnecte)) {
+        if (!is_null($userConnecte)) {
             if (strlen($userConnecte->getNom()) > 0 and strlen($userConnecte->getPrenom()) > 0) {
                 $userConnecte = $userConnecte->getPrenom() . ' ' . substr($userConnecte->getNom(), 0, 1) . '.';
             } else {
@@ -64,7 +66,8 @@ class SortieController extends AbstractController
         return $userConnecte;
     }
 
-    private function getSorties(){
+    private function getSorties()
+    {
         $em = $this->getDoctrine()->getManager();
         $repoSortie = $em->getRepository(Sortie::class);
         $repoInscription = $em->getRepository(Inscription::class);
@@ -73,23 +76,23 @@ class SortieController extends AbstractController
         $sorties = $repoSortie->findAll();
 
         foreach ($sorties as $sortie) {
-            $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
+            $tmp = $repoInscription->findBy(["sortie" => $sortie->getId()]);
 
             // Enregistrement du nombre d'inscrit par sorties
             $sortie->setNbInscriptions(sizeof($tmp));
 
             // Vérification sur les sorties si l'utilisateur courant est inscrit
             $sortie->setInscrit(false);
-            foreach ($tmp as $inscription){
-                if($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()){
+            foreach ($tmp as $inscription) {
+                if ($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()) {
                     $sortie->setInscrit(true);
                 }
             }
 
             // Paramètrage des actions en fonction de l'état de la sortie et de l'utilisateur
             // Si l'utilisateur courant est l'organisateur
-            if($sortie->getOrganisateur() == $this->getUser()) {
-                switch ($sortie->getEtat()->getLibelle()){
+            if ($sortie->getOrganisateur() == $this->getUser()) {
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "annuler"]);
@@ -103,10 +106,9 @@ class SortieController extends AbstractController
                         $sortie->setActions(["modifier", "publier"]);
                         break;
                 }
-            }
-            // Si l'utilisateur est inscrit
+            } // Si l'utilisateur est inscrit
             else if ($sortie->getInscrit()) {
-                switch ($sortie->getEtat()->getLibelle()){
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "desister"]);
@@ -118,10 +120,9 @@ class SortieController extends AbstractController
                         $sortie->setActions(["afficher"]);
                         break;
                 }
-            }
-            // Si l'utilisateur n'est pas inscrit
-            else if(!$sortie->getInscrit()) {
-                switch ($sortie->getEtat()->getLibelle()){
+            } // Si l'utilisateur n'est pas inscrit
+            else if (!$sortie->getInscrit()) {
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "inscrire"]);
@@ -152,24 +153,64 @@ class SortieController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $repoEtat = $em->getRepository(Etat::class);
-        $repoSite = $em->getRepository(Site::class);
+
 
         if ($sortieForm->isSubmitted()) {
-            $etat = $repoEtat->find(1);
+
+            $etat = null;
+            if ($sortieForm->get("publier")->isClicked()) {
+
+                $etat = $repoEtat->find(2);
+
+            }
+
+            if ($etat == null) {
+                $etat = $repoEtat->find(1);
+            }
+
 
             $user = $this->getUser();
             $site = $user->getSite();
             $sortie->setSite($site);
             $sortie->setEtat($etat);
-            $
+
             $sortie->setOrganisateur($user);
             $em->persist($sortie);
             $em->flush();
             $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
-            return $this->redirectToRoute("sortie_lister");
+//            return $this->redirectToRoute("sortie_lister");
         }
 
         return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+    }
+
+    /**
+     * @param $idSortie
+     *
+     * @param Request $request
+     * @return Response
+     * @Route("/modifier/{idSortie}", name="sortie_modifier")
+     */
+    public function modifier($idSortie, Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($idSortie);
+
+
+//        $repoLieu = $em->getRepository(Lieu::class);
+//
+//        $lieu= $repoLieu->find($sortie->getLieu()->getId());
+
+
+        //$sortie->setLieu($lieu);
+
+        $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+
+        return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
     }
 
     /**
@@ -187,8 +228,9 @@ class SortieController extends AbstractController
         $latitude = $lieu->getLatitude();
         $longitude = $lieu->getLongitude();
         $ville = $lieu->getVille();
-        $nomVille =$ville->getNom();
+        $nomVille = $ville->getNom();
         $codePostal = $ville->getCodePostal();
+
 
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
@@ -198,9 +240,8 @@ class SortieController extends AbstractController
             'latitude' => $latitude,
             'longitude' => $longitude,
             'nomVille' => $nomVille,
-            'codePostal' =>$codePostal
+            'codePostal' => $codePostal
         )));
-
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

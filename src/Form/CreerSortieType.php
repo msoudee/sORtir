@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,6 +34,12 @@ class CreerSortieType extends AbstractType
                 'choice_label'=>function(Lieu $lieu){
                     return $lieu->getNom();
                 }
+            ])
+            ->add('enregistrer', SubmitType::class, [
+                'attr' => ['class' => 'btn-block btn-primary btn'],
+            ])
+            ->add('publier', SubmitType::class, [
+                'attr' => ['class' => 'btn-block btn-primary btn'],
             ])
 
         ;

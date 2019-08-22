@@ -69,7 +69,7 @@
                <td>
                   {% for action in sortie.actions %}
                      {% if action == "modifier" %}
-                        <a class="btn btn-outline-info" href="#">Modifier</a>
+                        <a class="btn btn-outline-info" href="{{ path('sortie_modifier',{'idSortie':sortie.id}) }}">Modifier</a>
                      {% endif %}
                      {% if action == "publier" %}
                         <a class="btn btn-outline-success" href="#">Publier</a>

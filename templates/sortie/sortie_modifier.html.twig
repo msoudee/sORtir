@@ -30,7 +30,7 @@
 
         <div class="col-md-4">
             Ville :
-            <label class="form-control" id="ville"></label>
+            <label class="form-control" id="ville"> ville </label>
 
         </div>
     </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="col-md-4">
             Rue
-            <label class="form-control" id="rue"></label>
+            <label class="form-control" id="rue"> Rue </label>
         </div>
     </div>
 
@@ -63,7 +63,7 @@
         </div>
         <div class="col-md-4">
             Code Postal
-            <label class="form-control" id="codePostal"></label>
+            <label class="form-control" id="codePostal"> code postal valeur </label>
         </div>
     </div>
 
@@ -74,12 +74,12 @@
         </div>
         <div class="col-md-2">
             Latitude
-            <label class="form-control" id="latitude"></label>
+            <label class="form-control" id="latitude"> Latitude </label>
         </div>
 
         <div class="col-md-2">
             Longitude
-            <label class="form-control" id="longitude"></label>
+            <label class="form-control" id="longitude"> Longitude </label>
         </div>
     </div>
 
@@ -102,9 +102,9 @@
 
     <script type="application/javascript">
         // A $( document ).ready() block.
-        //$( document ).ready(chargementVille)
+        $( document ).ready(chargementVille);
 
-        $("#creer_sortie_lieu").change(chargementVille);
+        $("#creer_sortie_lieu").change( chargementVille);
 
 
         function chargementVille(){
@@ -112,7 +112,7 @@
             var lieu = $("#creer_sortie_lieu").val();
 
             $.ajax({
-                url:'ajax_lieu',
+                url:'../ajax_lieu',
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -121,7 +121,7 @@
                 async: true,
                 success: function (data)
                 {
-                    console.log(data)
+                    console.log(data);
                     $( '#rue' ).text(data.rue);
                     $( '#ville' ).text(data.nomVille);
                     $( '#codePostal' ).text(data.codePostal);
