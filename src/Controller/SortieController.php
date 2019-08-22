@@ -53,10 +53,13 @@ class SortieController extends AbstractController
 
     private function getNomUser(){
         $userConnecte = $this->getUser();
-        if(strlen($userConnecte->getNom()) > 0 and strlen($userConnecte->getPrenom()) > 0){
-            $userConnecte = $userConnecte->getPrenom().' '.substr($userConnecte->getNom(), 0, 1).'.';
-        } else {
-            $userConnecte = $userConnecte->getUsername();
+
+        if(!is_null($userConnecte)) {
+            if (strlen($userConnecte->getNom()) > 0 and strlen($userConnecte->getPrenom()) > 0) {
+                $userConnecte = $userConnecte->getPrenom() . ' ' . substr($userConnecte->getNom(), 0, 1) . '.';
+            } else {
+                $userConnecte = $userConnecte->getUsername();
+            }
         }
         return $userConnecte;
     }
