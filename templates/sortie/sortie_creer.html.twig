@@ -85,7 +85,7 @@
 
     <div class="row mt-4">
         <div class="col-md-3">
-            <a href="{{ path('sortie_lister') }}" class="btn-block btn-danger btn">Annuler</a>
+            <a href="{{ path('sortie_lister') }}" class="btn-block btn-secondary btn">Annuler</a>
         </div>
     <div class="col-md-3">
         {{ form_widget(form_CreerSortie.enregistrer) }}
@@ -121,7 +121,7 @@
                 async: true,
                 success: function (data)
                 {
-                    console.log(data)
+                    console.log(data);
                     $( '#rue' ).text(data.rue);
                     $( '#ville' ).text(data.nomVille);
                     $( '#codePostal' ).text(data.codePostal);

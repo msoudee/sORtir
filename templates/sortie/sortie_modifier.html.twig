@@ -83,18 +83,28 @@
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-4 mb-4">
         <div class="col-md-3">
-            <a href="{{ path('sortie_lister') }}" class="btn-block btn-danger btn">Annuler</a>
+            <a href="{{ path('sortie_lister') }}" class="btn-block btn-secondary btn">Annuler</a>
         </div>
-    <div class="col-md-3">
-        {{ form_widget(form_CreerSortie.enregistrer) }}
+        <div class="col-md-3">
+            {{ form_widget(form_CreerSortie.enregistrer) }}
 
-    </div><div class="col-md-3">
+        </div>
+        <div class="col-md-3">
             {{ form_widget(form_CreerSortie.publier) }}
-    </div>
+        </div>
 
     </div>
+
+    <div class="row mt-4 mb-4">
+        <div class="col-md-9">
+            <a href="{{ path('sortie_supprimer',{'id':idSortie}) }}" class="btn-block btn-danger btn">Supprimer</a>
+        </div>
+
+
+    </div>
+
 
 
 
@@ -102,31 +112,30 @@
 
     <script type="application/javascript">
         // A $( document ).ready() block.
-        $( document ).ready(chargementVille);
+        $(document).ready(chargementVille);
 
-        $("#creer_sortie_lieu").change( chargementVille);
+        $("#creer_sortie_lieu").change(chargementVille);
 
 
-        function chargementVille(){
+        function chargementVille() {
 
             var lieu = $("#creer_sortie_lieu").val();
 
             $.ajax({
-                url:'../ajax_lieu',
+                url: '../ajax_lieu',
                 type: "POST",
                 dataType: "json",
                 data: {
                     "nomLieu": lieu
                 },
                 async: true,
-                success: function (data)
-                {
+                success: function (data) {
                     console.log(data);
-                    $( '#rue' ).text(data.rue);
-                    $( '#ville' ).text(data.nomVille);
-                    $( '#codePostal' ).text(data.codePostal);
-                    $( '#latitude' ).text(data.latitude);
-                    $( '#longitude' ).text(data.longitude);
+                    $('#rue').text(data.rue);
+                    $('#ville').text(data.nomVille);
+                    $('#codePostal').text(data.codePostal);
+                    $('#latitude').text(data.latitude);
+                    $('#longitude').text(data.longitude);
 
                 }
             })

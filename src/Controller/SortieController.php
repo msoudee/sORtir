@@ -193,24 +193,70 @@ class SortieController extends AbstractController
      */
     public function modifier($idSortie, Request $request)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $sortie = $em->getRepository(Sortie::class)->find($idSortie);
-
-
-//        $repoLieu = $em->getRepository(Lieu::class);
-//
-//        $lieu= $repoLieu->find($sortie->getLieu()->getId());
-
-
-        //$sortie->setLieu($lieu);
 
         $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
 
         $sortieForm->handleRequest($request);
 
-        return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+        $repoEtat = $em->getRepository(Etat::class);
+
+        if ($sortieForm->isSubmitted()) {
+
+            $etat = null;
+            if ($sortieForm->get("publier")->isClicked()) {
+                $etat = $repoEtat->find(2);
+            }
+
+            if ($etat == null) {
+                $etat = $repoEtat->find(1);
+            }
+
+
+            $user = $this->getUser();
+            $site = $user->getSite();
+            $sortie->setSite($site);
+            $sortie->setEtat($etat);
+
+            //$sortie->setOrganisateur($user);
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
+            return $this->redirectToRoute("sortie_lister");
+        }
+
+        return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView(), 'idSortie' => $sortie->getId()]);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @Route("/supprimer/{id}", name="sortie_supprimer")
+     */
+    public function supprimer($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        $participants = $em->getRepository(Inscription::class)->findBy(['sortie'=>$id]);
+
+        if($participants){
+         $etat = $em->getRepository(Etat::class)->find(6);
+         $sortie->setEtat($etat);
+         $em->persist($sortie);
+         $em->flush();
+            $this->addFlash("messageSuccess", "Votre sortie a bien été annulée");
+        }else {
+            $em->remove($sortie);
+            $em->flush();
+            $this->addFlash("messageSuccess", "Votre sortie a bien été supprimée");
+        }
+        return $this->redirectToRoute("sortie_lister");
+
+
     }
 
     /**
@@ -219,7 +265,7 @@ class SortieController extends AbstractController
     public function ajaxAction(Request $request)
     {
         /* on récupère la valeur envoyée par la vue */
-        $idLieu = $request->request->get('nomLieu');
+        $idLieu = $request->get('nomLieu');
 
         $em = $this->getDoctrine()->getManager();
         $repoLieu = $em->getRepository(Lieu::class);

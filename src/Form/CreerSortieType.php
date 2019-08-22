@@ -39,7 +39,7 @@ class CreerSortieType extends AbstractType
                 'attr' => ['class' => 'btn-block btn-primary btn'],
             ])
             ->add('publier', SubmitType::class, [
-                'attr' => ['class' => 'btn-block btn-primary btn'],
+                'attr' => ['class' => 'btn-block btn-success btn'],
             ])
 
         ;
