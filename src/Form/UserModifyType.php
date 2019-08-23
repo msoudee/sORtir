@@ -37,7 +37,7 @@ class UserModifyType extends AbstractType
             ->add('prenom', TextType::class, [
                 'required' => true
             ])
-            ->add('telephone', IntegerType::class, [
+            ->add('telephone', TextType::class, [
                 'required' => true,
                 'constraints'=> [new Length(10)],
             ])
