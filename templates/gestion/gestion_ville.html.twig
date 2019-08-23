@@ -3,16 +3,22 @@
 {% block title %}Gestion des villes{% endblock %}
 
 {% block body %}
-    <h1>Gérer les villes</h1>
+    <h1 class="display-3">Gérer les villes</h1>
 
     {{ form_start(searchCityForm) }}
 
         <label>Rechercher une ville par nom :</label>
-        {{ form_widget(searchCityForm.nom) }}
 
-        <input type="submit" class="btn btn-outline-success" value="Rechercher">
+        <div class="row">
+            <div class="col-10">
+                {{ form_widget(searchCityForm.nom) }}
+            </div>
+            <div class="col-2">
+                <input type="submit" class="btn btn-outline-success btn-block" value="Rechercher">
+            </div>
+        </div>
+
     {{ form_end(searchCityForm) }}
-
 
     <br>
 

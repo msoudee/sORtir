@@ -71,12 +71,10 @@ class Sortie
      * @ORM\JoinColumn(nullable=false)
      */
     private $organisateur;
-
     private $nbInscriptions;
-
     private $inscrit;
-
     private $actions;
+    private $cbOrganisateur, $cbInscrit, $cbNonInscrit, $cbTerminees;
 
     public function getId(): ?int
     {
@@ -238,4 +236,70 @@ class Sortie
     {
         $this->actions = $actions;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCbOrganisateur()
+    {
+        return $this->cbOrganisateur;
+    }
+
+    /**
+     * @param mixed $cbOrganisateur
+     */
+    public function setCbOrganisateur($cbOrganisateur): void
+    {
+        $this->cbOrganisateur = $cbOrganisateur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCbInscrit()
+    {
+        return $this->cbInscrit;
+    }
+
+    /**
+     * @param mixed $cbInscrit
+     */
+    public function setCbInscrit($cbInscrit): void
+    {
+        $this->cbInscrit = $cbInscrit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCbNonInscrit()
+    {
+        return $this->cbNonInscrit;
+    }
+
+    /**
+     * @param mixed $cbNonInscrit
+     */
+    public function setCbNonInscrit($cbNonInscrit): void
+    {
+        $this->cbNonInscrit = $cbNonInscrit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCbTerminees()
+    {
+        return $this->cbTerminees;
+    }
+
+    /**
+     * @param mixed $cbTerminees
+     */
+    public function setCbTerminees($cbTerminees): void
+    {
+        $this->cbTerminees = $cbTerminees;
+    }
+
+    
 }

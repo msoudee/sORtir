@@ -32,6 +32,26 @@
          </div>
       </div>
 
+      <div class="row">
+         <div class="form-group col-5 offset-1">
+            {{ form_widget(formFiltre.cbOrganisateur) }}
+         </div>
+
+         <div class="form-group col-5">
+            {{ form_widget(formFiltre.cbInscrit) }}
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="form-group col-5 offset-1">
+            {{ form_widget(formFiltre.cbNonInscrit) }}
+         </div>
+
+         <div class="form-group col-5">
+            {{ form_widget(formFiltre.cbTerminees) }}
+         </div>
+      </div>
+
       <input type="submit" class="btn btn-primary btn-block" value="Rechercher">
       {{ form_end(formFiltre) }}
 
@@ -65,7 +85,7 @@
                {% else %}
                   <td align="center"><img src="{{ asset("img/unchecked.png") }}" width="24px"></td>
                {% endif %}
-               <td>{{ sortie.organisateur.username }}</td>
+               <td><a href="{{ path('app_profile', { 'id':sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a></td>
                <td>
                   {% for action in sortie.actions %}
                      {% if action == "modifier" %}
@@ -93,7 +113,10 @@
          </tbody>
       </table>
 
-      <a class="btn btn-success" href="{{ path('sortie_creer') }}">Créer une sortie</a>
+      <div class="row offset-10">
+         <a class="btn btn-success" href="{{ path('sortie_creer') }}">Créer une sortie</a>
+      </div>
+
    {% else %}
       <h1>VOUS N'ÊTES PAS CONNECTÉ</h1>
    {% endif %}
