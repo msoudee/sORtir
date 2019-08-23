@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Gestion des sites{% endblock %}
+
+{% block body %}
+    <h1 class="display-3">Gérer les sites</h1>
+
+    {{ form_start(searchSiteForm) }}
+
+        <label>Rechercher un site par nom :</label>
+
+        <div class="row">
+            <div class="col-10">
+                {{ form_widget(searchSiteForm.libelle) }}
+            </div>
+            <div class="col-2">
+                <input type="submit" class="btn btn-outline-success btn-block" value="Rechercher">
+            </div>
+        </div>
+
+    {{ form_end(searchSiteForm) }}
+
+    <br>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Site</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for site in sites %}
+                <tr>
+                    <td>{{ site.libelle }}</td>
+                    <td><a class="btn btn-outline-danger" href="{{ path("gestion_site_supprimer", {"id":site.id}) }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                {{ form_start(newSiteForm) }}
+                    <td>{{ form_widget(newSiteForm.libelle) }}</td>
+                    <td><input type="submit" class="btn btn-outline-success" value="Enregistrer"></td>
+                {{ form_end(newSiteForm) }}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
