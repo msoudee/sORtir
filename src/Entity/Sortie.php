@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SortieRepository")
+ *
  */
 class Sortie
 {
@@ -25,6 +27,9 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual("now",
+     *     message="La date de début doit être supérieur ou égal à la date du jour")
+     * )
      */
     private $dateDebut;
 
@@ -35,6 +40,9 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Expression("this.getDateDebut() > this.getDateCloture() and this.getDateActuelle() < this.getDateCloture()",
+     *     message="La date de cloture doit être inférieur à la date de début")
+     * )
      */
     private $dateCloture;
 
@@ -302,4 +310,10 @@ class Sortie
     }
 
     
+
+    public function getDateActuelle(){
+        return new \DateTime();
+    }
+
+
 }

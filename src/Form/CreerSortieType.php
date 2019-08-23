@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,14 +18,19 @@ class CreerSortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
+            ->add('nom', TextType::class,[
+
+                'label'=>false])
 
             ->add('dateDebut',DateTimeType::class, [
-                'widget' =>'single_text'
+                'widget' =>'single_text',
+                'label'=>false
+
             ])
             ->add('duree')
             ->add('dateCloture',DateTimeType::class, [
-                'widget' =>'single_text'
+                'widget' =>'single_text',
+                'label'=>false
             ])
             ->add('nbinscriptionsmax')
             ->add('description',TextareaType::class)

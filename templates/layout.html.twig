@@ -8,6 +8,8 @@
 
     <link rel="stylesheet"
           href="{{ asset("css/bootstrap.min.css") }}">
+    <link rel="stylesheet"
+          href="{{ asset("css/style.css") }}">
 
 
     <script type="application/javascript"
@@ -25,22 +27,25 @@
 <header>
     {% include('inc/nav.html.twig') %}
 </header>
-<div>
+<div class="container">
     {% for label,messages in app.flashes %}
         {% for message in messages %}
-            <div class="flash flash-{{ label }}">
+            <div class=" mt-2 alert alert-info flash flash-{{ label }}">
                 {{ message }}
             </div>
         {% endfor %}
     {% endfor %}
 
 </div>
-<div class="container">
+
+<div class="container main">
     {% block body %}{% endblock %}
 </div>
-<footer>
-    {% include('inc/foot.html.twig') %}
-</footer>
+
+
+    <footer class="footer mt-auto py-3">
+        {% include('inc/foot.html.twig') %}
+    </footer>
 
 </body>
 </html>

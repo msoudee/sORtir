@@ -40,30 +40,30 @@ class SortieController extends AbstractController
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
         $formFiltre->handleRequest($request);
         if ($formFiltre->isSubmitted()) {
-            if(!is_null($filtre->getSite())){
+            if (!is_null($filtre->getSite())) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getSite() != $filtre->getSite()){
+                    if ($sortie->getSite() != $filtre->getSite()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!is_null($filtre->getNom())){
+            if (!is_null($filtre->getNom())) {
                 foreach ($sorties as $sortie) {
-                    if(strpos($sortie->getNom(), $filtre->getNom()) === false ){
+                    if (strpos($sortie->getNom(), $filtre->getNom()) === false) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!is_null($filtre->getDateDebut())){
+            if (!is_null($filtre->getDateDebut())) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getDateDebut() < $filtre->getDateDebut()){
+                    if ($sortie->getDateDebut() < $filtre->getDateDebut()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!is_null($filtre->getDateCloture())){
+            if (!is_null($filtre->getDateCloture())) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getDateDebut() > $filtre->getDateCloture()){
+                    if ($sortie->getDateDebut() > $filtre->getDateCloture()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
@@ -140,11 +140,12 @@ class SortieController extends AbstractController
         return $sorties;
     }
 
-    private function completerDonnesSorties($sorties){
+    private function completerDonnesSorties($sorties)
+    {
         foreach ($sorties as $sortie) {
             $em = $this->getDoctrine()->getManager();
             $repoInscription = $em->getRepository(Inscription::class);
-            $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
+            $tmp = $repoInscription->findBy(["sortie" => $sortie->getId()]);
 
             // Enregistrement du nombre d'inscrit par sorties
             $sortie->setNbInscriptions(sizeof($tmp));
@@ -215,7 +216,11 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
         $sortie->setDateDebut(new \DateTime());
-        $sortie->setDateCloture(new \DateTime());
+
+        $dateDeFin = new DateTime();
+        $dateDeFin->modify("+1 day");
+
+        $sortie->setDateCloture($dateDeFin);
         $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
@@ -223,7 +228,7 @@ class SortieController extends AbstractController
         $repoEtat = $em->getRepository(Etat::class);
 
 
-        if ($sortieForm->isSubmitted()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
             $etat = null;
             if ($sortieForm->get("publier")->isClicked()) {
@@ -245,8 +250,8 @@ class SortieController extends AbstractController
             $sortie->setOrganisateur($user);
             $em->persist($sortie);
             $em->flush();
-            $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
-//            return $this->redirectToRoute("sortie_lister");
+            $this->addFlash("messageSuccess", "Votre sortie a bien été enregistrée");
+            return $this->redirectToRoute("sortie_lister");
         }
 
         return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
@@ -309,15 +314,15 @@ class SortieController extends AbstractController
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
 
-        $participants = $em->getRepository(Inscription::class)->findBy(['sortie'=>$id]);
+        $participants = $em->getRepository(Inscription::class)->findBy(['sortie' => $id]);
 
-        if($participants){
-         $etat = $em->getRepository(Etat::class)->find(6);
-         $sortie->setEtat($etat);
-         $em->persist($sortie);
-         $em->flush();
+        if ($participants) {
+            $etat = $em->getRepository(Etat::class)->find(6);
+            $sortie->setEtat($etat);
+            $em->persist($sortie);
+            $em->flush();
             $this->addFlash("messageSuccess", "Votre sortie a bien été annulée");
-        }else {
+        } else {
             $em->remove($sortie);
             $em->flush();
             $this->addFlash("messageSuccess", "Votre sortie a bien été supprimée");
