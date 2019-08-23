@@ -5,20 +5,16 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Lieu;
-use App\Entity\Site;
 use App\Entity\Sortie;
-use App\Entity\User;
 use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
-use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @Route("/sortie")
@@ -36,6 +32,11 @@ class SortieController extends AbstractController
 
         // Création du formulaire pour filtrer les recherches
         $filtre = new Sortie();
+        $filtre->setCbOrganisateur(true);
+        $filtre->setCbInscrit(true);
+        $filtre->setCbNonInscrit(true);
+        $filtre->setCbTerminees(true);
+
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
         $formFiltre->handleRequest($request);
         if ($formFiltre->isSubmitted()) {
@@ -63,6 +64,34 @@ class SortieController extends AbstractController
             if(!is_null($filtre->getDateCloture())){
                 foreach ($sorties as $sortie) {
                     if($sortie->getDateDebut() > $filtre->getDateCloture()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!$filtre->getCbOrganisateur()){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getOrganisateur() == $this->getUser()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!$filtre->getCbInscrit()){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getInscrit()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!$filtre->getCbNonInscrit()){
+                foreach ($sorties as $sortie) {
+                    if(!$sortie->getInscrit()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!$filtre->getCbTerminees()){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getEtat()->getLibelle() == 'Passée'){
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
@@ -102,8 +131,11 @@ class SortieController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $repoSortie = $em->getRepository(Sortie::class);
 
-        // Récupération de toutes les sorties
-        $sorties = $repoSortie->findAll();
+        $dateLimit = new DateTime();
+        $dateLimit->modify("-1 month");
+
+        // Récupération de toutes les sorties de moins d'un mois classé par date de cloture
+        $sorties = $repoSortie->findByDateLimitOrderByDateCloture($dateLimit);
 
         return $sorties;
     }
