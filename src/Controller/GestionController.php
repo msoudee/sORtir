@@ -45,6 +45,7 @@ class GestionController extends AbstractController
         if ($newCityForm->isSubmitted()) {
             $em->persist($newCity);
             $em->flush();
+            $this->addFlash("messageSuccess", "Ville ajoutée avec succés !");
             return $this->redirectToRoute("gestion_ville");
         }
 
@@ -67,6 +68,7 @@ class GestionController extends AbstractController
 
         $em->remove($ville);
         $em->flush();
+        $this->addFlash("messageSuccess", "Ville supprimée avec succés !");
 
         return $this->redirectToRoute("gestion_ville");
     }
@@ -99,6 +101,7 @@ class GestionController extends AbstractController
         if ($newSiteForm->isSubmitted()) {
             $em->persist($newSite);
             $em->flush();
+            $this->addFlash("messageSuccess", "Site ajouté avec succés !");
             return $this->redirectToRoute("gestion_site");
         }
 
@@ -121,6 +124,7 @@ class GestionController extends AbstractController
 
         $em->remove($site);
         $em->flush();
+        $this->addFlash("messageSuccess", "Site supprimé avec succés !");
 
         return $this->redirectToRoute("gestion_site");
     }
