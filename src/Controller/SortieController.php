@@ -12,10 +12,13 @@ use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route("/sortie")
@@ -25,18 +28,46 @@ class SortieController extends AbstractController
     /**
      * @Route("/lister", name="sortie_lister")
      */
-    public function lister(/*Request $request*/)
+    public function lister(Request $request)
     {
         // Récupération de toutes les sorties enregistrées en BDD
         $sorties = $this->getSorties();
+        $sorties = $this->completerDonnesSorties($sorties);
 
         // Création du formulaire pour filtrer les recherches
         $filtre = new Sortie();
         $formFiltre = $this->createForm(FiltreType::class, $filtre);
-        /*$formFiltre->handleRequest($request);
-        if ($formFiltre->isSubmitted() && $formFiltre->isValid()) {
-
-        }*/
+        $formFiltre->handleRequest($request);
+        if ($formFiltre->isSubmitted()) {
+            if(!is_null($filtre->getSite())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getSite() != $filtre->getSite()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getNom())){
+                foreach ($sorties as $sortie) {
+                    if(strpos($sortie->getNom(), $filtre->getNom()) === false ){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getDateDebut())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getDateDebut() < $filtre->getDateDebut()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+            if(!is_null($filtre->getDateCloture())){
+                foreach ($sorties as $sortie) {
+                    if($sortie->getDateDebut() > $filtre->getDateCloture()){
+                        unset($sorties[array_search($sortie, $sorties)]);
+                    }
+                }
+            }
+        }
 
         return $this->render('sortie/sortie_lister.html.twig', [
             "formFiltre" => $formFiltre->createView(),
@@ -46,15 +77,17 @@ class SortieController extends AbstractController
         ]);
     }
 
-    private function getDateActuelle(){
+    private function getDateActuelle()
+    {
         $dateDuJour = new DateTime();
         return $dateDuJour->format("d/m/Y");
     }
 
-    private function getNomUser(){
+    private function getNomUser()
+    {
         $userConnecte = $this->getUser();
 
-        if(!is_null($userConnecte)) {
+        if (!is_null($userConnecte)) {
             if (strlen($userConnecte->getNom()) > 0 and strlen($userConnecte->getPrenom()) > 0) {
                 $userConnecte = $userConnecte->getPrenom() . ' ' . substr($userConnecte->getNom(), 0, 1) . '.';
             } else {
@@ -64,15 +97,21 @@ class SortieController extends AbstractController
         return $userConnecte;
     }
 
-    private function getSorties(){
+    private function getSorties()
+    {
         $em = $this->getDoctrine()->getManager();
         $repoSortie = $em->getRepository(Sortie::class);
-        $repoInscription = $em->getRepository(Inscription::class);
 
         // Récupération de toutes les sorties
         $sorties = $repoSortie->findAll();
 
+        return $sorties;
+    }
+
+    private function completerDonnesSorties($sorties){
         foreach ($sorties as $sortie) {
+            $em = $this->getDoctrine()->getManager();
+            $repoInscription = $em->getRepository(Inscription::class);
             $tmp = $repoInscription->findBy(["sortie"=>$sortie->getId()]);
 
             // Enregistrement du nombre d'inscrit par sorties
@@ -80,16 +119,16 @@ class SortieController extends AbstractController
 
             // Vérification sur les sorties si l'utilisateur courant est inscrit
             $sortie->setInscrit(false);
-            foreach ($tmp as $inscription){
-                if($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()){
+            foreach ($tmp as $inscription) {
+                if ($inscription->getSortie() == $sortie and $inscription->getParticipant() == $this->getUser()) {
                     $sortie->setInscrit(true);
                 }
             }
 
             // Paramètrage des actions en fonction de l'état de la sortie et de l'utilisateur
             // Si l'utilisateur courant est l'organisateur
-            if($sortie->getOrganisateur() == $this->getUser()) {
-                switch ($sortie->getEtat()->getLibelle()){
+            if ($sortie->getOrganisateur() == $this->getUser()) {
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "annuler"]);
@@ -103,10 +142,9 @@ class SortieController extends AbstractController
                         $sortie->setActions(["modifier", "publier"]);
                         break;
                 }
-            }
-            // Si l'utilisateur est inscrit
+            } // Si l'utilisateur est inscrit
             else if ($sortie->getInscrit()) {
-                switch ($sortie->getEtat()->getLibelle()){
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "desister"]);
@@ -118,10 +156,9 @@ class SortieController extends AbstractController
                         $sortie->setActions(["afficher"]);
                         break;
                 }
-            }
-            // Si l'utilisateur n'est pas inscrit
-            else if(!$sortie->getInscrit()) {
-                switch ($sortie->getEtat()->getLibelle()){
+            } // Si l'utilisateur n'est pas inscrit
+            else if (!$sortie->getInscrit()) {
+                switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
                         $sortie->setActions(["afficher", "inscrire"]);
@@ -152,24 +189,110 @@ class SortieController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $repoEtat = $em->getRepository(Etat::class);
-        $repoSite = $em->getRepository(Site::class);
+
 
         if ($sortieForm->isSubmitted()) {
-            $etat = $repoEtat->find(1);
+
+            $etat = null;
+            if ($sortieForm->get("publier")->isClicked()) {
+
+                $etat = $repoEtat->find(2);
+
+            }
+
+            if ($etat == null) {
+                $etat = $repoEtat->find(1);
+            }
+
 
             $user = $this->getUser();
             $site = $user->getSite();
             $sortie->setSite($site);
             $sortie->setEtat($etat);
-            $
+
             $sortie->setOrganisateur($user);
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
+//            return $this->redirectToRoute("sortie_lister");
+        }
+
+        return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+    }
+
+    /**
+     * @param $idSortie
+     *
+     * @param Request $request
+     * @return Response
+     * @Route("/modifier/{idSortie}", name="sortie_modifier")
+     */
+    public function modifier($idSortie, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($idSortie);
+
+        $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+
+        $repoEtat = $em->getRepository(Etat::class);
+
+        if ($sortieForm->isSubmitted()) {
+
+            $etat = null;
+            if ($sortieForm->get("publier")->isClicked()) {
+                $etat = $repoEtat->find(2);
+            }
+
+            if ($etat == null) {
+                $etat = $repoEtat->find(1);
+            }
+
+
+            $user = $this->getUser();
+            $site = $user->getSite();
+            $sortie->setSite($site);
+            $sortie->setEtat($etat);
+
+            //$sortie->setOrganisateur($user);
             $em->persist($sortie);
             $em->flush();
             $this->addFlash("messageSucces", "Votre sortie a bien été enregistrée");
             return $this->redirectToRoute("sortie_lister");
         }
 
-        return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+        return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView(), 'idSortie' => $sortie->getId()]);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @Route("/supprimer/{id}", name="sortie_supprimer")
+     */
+    public function supprimer($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        $participants = $em->getRepository(Inscription::class)->findBy(['sortie'=>$id]);
+
+        if($participants){
+         $etat = $em->getRepository(Etat::class)->find(6);
+         $sortie->setEtat($etat);
+         $em->persist($sortie);
+         $em->flush();
+            $this->addFlash("messageSuccess", "Votre sortie a bien été annulée");
+        }else {
+            $em->remove($sortie);
+            $em->flush();
+            $this->addFlash("messageSuccess", "Votre sortie a bien été supprimée");
+        }
+        return $this->redirectToRoute("sortie_lister");
+
+
     }
 
     /**
@@ -178,7 +301,7 @@ class SortieController extends AbstractController
     public function ajaxAction(Request $request)
     {
         /* on récupère la valeur envoyée par la vue */
-        $idLieu = $request->request->get('nomLieu');
+        $idLieu = $request->get('nomLieu');
 
         $em = $this->getDoctrine()->getManager();
         $repoLieu = $em->getRepository(Lieu::class);
@@ -187,8 +310,9 @@ class SortieController extends AbstractController
         $latitude = $lieu->getLatitude();
         $longitude = $lieu->getLongitude();
         $ville = $lieu->getVille();
-        $nomVille =$ville->getNom();
+        $nomVille = $ville->getNom();
         $codePostal = $ville->getCodePostal();
+
 
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
@@ -198,9 +322,8 @@ class SortieController extends AbstractController
             'latitude' => $latitude,
             'longitude' => $longitude,
             'nomVille' => $nomVille,
-            'codePostal' =>$codePostal
+            'codePostal' => $codePostal
         )));
-
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

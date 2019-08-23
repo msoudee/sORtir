@@ -30,7 +30,7 @@
 
         <div class="col-md-4">
             Ville :
-            <label class="form-control" id="ville"></label>
+            <label class="form-control" id="ville"> ville </label>
 
         </div>
     </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="col-md-4">
             Rue
-            <label class="form-control" id="rue"></label>
+            <label class="form-control" id="rue"> Rue </label>
         </div>
     </div>
 
@@ -63,7 +63,7 @@
         </div>
         <div class="col-md-4">
             Code Postal
-            <label class="form-control" id="codePostal"></label>
+            <label class="form-control" id="codePostal"> code postal valeur </label>
         </div>
     </div>
 
@@ -74,27 +74,37 @@
         </div>
         <div class="col-md-2">
             Latitude
-            <label class="form-control" id="latitude"></label>
+            <label class="form-control" id="latitude"> Latitude </label>
         </div>
 
         <div class="col-md-2">
             Longitude
-            <label class="form-control" id="longitude"></label>
+            <label class="form-control" id="longitude"> Longitude </label>
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-4 mb-4">
         <div class="col-md-3">
             <a href="{{ path('sortie_lister') }}" class="btn-block btn-secondary btn">Annuler</a>
         </div>
-    <div class="col-md-3">
-        {{ form_widget(form_CreerSortie.enregistrer) }}
+        <div class="col-md-3">
+            {{ form_widget(form_CreerSortie.enregistrer) }}
 
-    </div><div class="col-md-3">
+        </div>
+        <div class="col-md-3">
             {{ form_widget(form_CreerSortie.publier) }}
-    </div>
+        </div>
 
     </div>
+
+    <div class="row mt-4 mb-4">
+        <div class="col-md-9">
+            <a href="{{ path('sortie_supprimer',{'id':idSortie}) }}" class="btn-block btn-danger btn">Supprimer</a>
+        </div>
+
+
+    </div>
+
 
 
 
@@ -102,31 +112,30 @@
 
     <script type="application/javascript">
         // A $( document ).ready() block.
-        //$( document ).ready(chargementVille)
+        $(document).ready(chargementVille);
 
         $("#creer_sortie_lieu").change(chargementVille);
 
 
-        function chargementVille(){
+        function chargementVille() {
 
             var lieu = $("#creer_sortie_lieu").val();
 
             $.ajax({
-                url:'ajax_lieu',
+                url: '../ajax_lieu',
                 type: "POST",
                 dataType: "json",
                 data: {
                     "nomLieu": lieu
                 },
                 async: true,
-                success: function (data)
-                {
+                success: function (data) {
                     console.log(data);
-                    $( '#rue' ).text(data.rue);
-                    $( '#ville' ).text(data.nomVille);
-                    $( '#codePostal' ).text(data.codePostal);
-                    $( '#latitude' ).text(data.latitude);
-                    $( '#longitude' ).text(data.longitude);
+                    $('#rue').text(data.rue);
+                    $('#ville').text(data.nomVille);
+                    $('#codePostal').text(data.codePostal);
+                    $('#latitude').text(data.latitude);
+                    $('#longitude').text(data.longitude);
 
                 }
             })
