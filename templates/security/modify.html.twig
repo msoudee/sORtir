@@ -6,7 +6,8 @@
     <form method="post">
     <h1>Mon Profil</h1>
         {{ form_start(modifyForm) }}
-            {{ form_row(modifyForm.username) }}
+            <label>Pseudo</label>
+            {{ form_widget(modifyForm.username) }}
             {{ form_row(modifyForm.prenom) }}
             {{ form_row(modifyForm.nom) }}
             {{ form_row(modifyForm.telephone) }}

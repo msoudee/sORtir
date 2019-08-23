@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Site;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\UserModifyType;
@@ -9,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -42,36 +44,21 @@ class SecurityController extends AbstractController
      * @Route("/modify", name="app_modify")
      */
 
-    public function modify(Request $request)
+    public function modify(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserModifyType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            var_dump($user);
             // encode the plain password
-//            $user->setPassword(
-//                $passwordEncoder->encodePassword(
-//                    $user,
-//                    $form->get('plainPassword')->getData()
-//                )
-//            );
-            if(!is_null($form->get('prenom')->getData())){
-                $user->setPrenom($form->get('prenom')->getData());
-            }
-            if(!is_null($form->get('nom')->getData())){
-               // $user->setNom($form->get('nom')->getData());
-            }
-            if(!is_null($form->get('telephone')->getData())){
-                $user->setTelephone($form->get('telephone')->getData());
-            }
-            if(is_null($form->get('mail')->getData()) != true){
-                $user->setMail($form->get('mail')->getData());
-            }
-            if(is_null($form->get('site')->getData()) != true){
-                $user->setSite($form->get('site')->getData());
-            }
-            $user->setActif(true);
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -85,5 +72,24 @@ class SecurityController extends AbstractController
             'modifyForm' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/profil/{id}", name="app_profile")
+     */
+    public function profile(Request $request, int $id)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(User::class)
+        ;
 
+        $user = $repository->find($id);
+        if(is_null($user) )
+        {
+            return $this->redirectToRoute('sortie_lister');
+        }
+        return $this->render('security/profile.html.twig', [
+            'user'=> $user,
+        ]);
+    }
 }

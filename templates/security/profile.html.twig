@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <h1>{{user.username}}</h1>
+        <table>
+            <tr>
+                <td>Prénom : </td>
+                <td>{{ user.prenom }}</td>
+            </tr>
+            <tr>
+                <td>Nom : </td>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <td>Téléphone : </td>
+                <td>{{ user.telephone }}</td>
+            </tr>
+            <tr>
+                <td>Email : </td>
+                <td>{{ user.mail }}</td>
+            </tr>
+            <tr>
+                <td>Site : </td>
+                <td>{{ user.site.libelle }}</td>
+            </tr>
+
+        </table>
+
+
+
+    </form>
+{% endblock %}
