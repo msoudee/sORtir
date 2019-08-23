@@ -95,7 +95,7 @@
                         <a class="btn btn-outline-success" href="#">Publier</a>
                      {% endif %}
                      {% if action == "afficher" %}
-                        <a class="btn btn-outline-primary" href="#">Afficher</a>
+                        <a class="btn btn-outline-primary" href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
                      {% endif %}
                      {% if action == "annuler" %}
                         <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>

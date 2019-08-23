@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\AnnulerSortieType;
 use App\Form\FiltreType;
 use DateTime;
@@ -304,6 +305,24 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView(), 'idSortie' => $sortie->getId()]);
+    }
+
+    /**
+     * @param $idSortie
+     *
+     * @param Request $request
+     * @return Response
+     * @Route("/afficher/{id}", name="sortie_afficher")
+     */
+    public function afficher($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        $participants = $em->getRepository(Inscription::class )->findBy(['sortie'=>$id]);
+
+        return $this->render('sortie/sortie_afficher.html.twig', ['sortie' => $sortie, "participants" => $participants]);
     }
 
     /**

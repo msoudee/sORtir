@@ -1,0 +1,124 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Créer une sortie{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center mt-4 mb-4">Afficher une sortie</h1>
+
+
+    <div class="offset-3">
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+                Nom de la sortie :
+                {{ sortie.nom }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Ville organisatrice :
+                {{ sortie.dateDebut |date("d/m/Y H:i") }}
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+               Date et heure de la sortie :
+                {{ sortie.dateDebut|date("d/m/Y H:i") }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Lieu :
+                {{ sortie.lieu.nom }}
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+               Date limite inscription :
+                {{ sortie.dateDebut|date("d/m/Y H:i") }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Rue :
+                {{ sortie.lieu.rue }}
+
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+               Nombre de places :
+                {{ sortie.nbInscriptionsMax }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Rue :
+                {{ sortie.lieu.ville.codePostal }}
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+               durée :
+                {{ sortie.duree }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Latitude :
+                {{ sortie.lieu.latitude }}
+
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-4 mb-4 col-md-6">
+
+               Description et infos :
+                {{ sortie.description }}
+
+            </div>
+            <div class="mt-4 mb-4 col-md-6">
+
+                Longitude :
+                {{ sortie.lieu.longitude }}
+
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Pseudo</th>
+                <th scope="col">Nom</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for participant in participants %}
+                <tr>
+                    <td>{{ participant.participant.username }}</td>
+                    <td>{{ participant.participant.prenom }}</td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+{% endblock %}
