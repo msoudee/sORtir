@@ -91,7 +91,7 @@ class SecurityController extends AbstractController
 
             // do anything else you need here, like send an email
 
-           // return $this->redirectToRoute('app_modify');
+            return $this->redirectToRoute('app_modify');
         }
 
         return $this->render('security/modify.html.twig', ['user'=>$user,

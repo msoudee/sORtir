@@ -11,13 +11,12 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-                Nom de la sortie :
+                <strong>Nom de la sortie :</strong>
                 {{ sortie.nom }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
-
-                Ville organisatrice :
+                <strong>Ville organisatrice :</strong>
                 {{ sortie.dateDebut |date("d/m/Y H:i") }}
 
             </div>
@@ -26,13 +25,13 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-               Date et heure de la sortie :
+                <strong>Date et heure de la sortie :</strong>
                 {{ sortie.dateDebut|date("d/m/Y H:i") }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
 
-                Lieu :
+                <strong>Lieu :</strong>
                 {{ sortie.lieu.nom }}
 
             </div>
@@ -41,13 +40,13 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-               Date limite inscription :
+                <strong>Date limite inscription :</strong>
                 {{ sortie.dateDebut|date("d/m/Y H:i") }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
 
-                Rue :
+                <strong> Rue :</strong>
                 {{ sortie.lieu.rue }}
 
             </div>
@@ -55,13 +54,13 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-               Nombre de places :
+                <strong>Nombre de places :</strong>
                 {{ sortie.nbInscriptionsMax }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
 
-                Rue :
+                <strong>Rue :</strong>
                 {{ sortie.lieu.ville.codePostal }}
 
             </div>
@@ -70,13 +69,13 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-               durée :
+                <strong>durée :</strong>
                 {{ sortie.duree }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
 
-                Latitude :
+                <strong>Latitude :</strong>
                 {{ sortie.lieu.latitude }}
 
             </div>
@@ -84,19 +83,20 @@
         <div class="row">
             <div class=" mt-4 mb-4 col-md-6">
 
-               Description et infos :
+                <strong>  Description et infos :</strong>
                 {{ sortie.description }}
 
             </div>
             <div class="mt-4 mb-4 col-md-6">
 
-                Longitude :
+                <strong> Longitude :</strong>
                 {{ sortie.lieu.longitude }}
 
             </div>
         </div>
     </div>
 
+    <hr class="my-4"/>
 
     <div class="row col-md-4 mt-5 offset-8 ">
 
@@ -114,8 +114,8 @@
 
             {% for participant in participants %}
                 <tr>
-                    <td>{{ participant.participant.username }}</td>
-                    <td><a href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a></td>
+                    <td><strong>{{ participant.participant.username }}</strong></td>
+                    <td><a class="alert-link" href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a></td>
 
                 </tr>
             {% endfor %}

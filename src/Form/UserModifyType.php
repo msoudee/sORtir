@@ -62,6 +62,7 @@ class UserModifyType extends AbstractType
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Ajouter une photo de profil',
+                'attr' => ['placeholder' => 'Choisissez votre image'],
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
