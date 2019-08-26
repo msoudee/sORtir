@@ -72,30 +72,30 @@ class SortieController extends AbstractController
                     }
                 }
             }
-            if(!$filtre->getCbOrganisateur()){
+            if (!$filtre->getCbOrganisateur()) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getOrganisateur() == $this->getUser()){
+                    if ($sortie->getOrganisateur() == $this->getUser()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!$filtre->getCbInscrit()){
+            if (!$filtre->getCbInscrit()) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getInscrit()){
+                    if ($sortie->getInscrit()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!$filtre->getCbNonInscrit()){
+            if (!$filtre->getCbNonInscrit()) {
                 foreach ($sorties as $sortie) {
-                    if(!$sortie->getInscrit()){
+                    if (!$sortie->getInscrit()) {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
             }
-            if(!$filtre->getCbTerminees()){
+            if (!$filtre->getCbTerminees()) {
                 foreach ($sorties as $sortie) {
-                    if($sortie->getEtat()->getLibelle() == 'Passée'){
+                    if ($sortie->getEtat()->getLibelle() == 'Passée') {
                         unset($sorties[array_search($sortie, $sorties)]);
                     }
                 }
@@ -198,7 +198,7 @@ class SortieController extends AbstractController
                 switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
-                        if($sortie->getNbInscriptions() < $sortie->getNbInscriptionsMax()){
+                        if ($sortie->getNbInscriptions() < $sortie->getNbInscriptionsMax()) {
                             $sortie->setActions(["afficher", "inscrire"]);
                         } else {
                             $sortie->setActions(["afficher"]);
@@ -318,6 +318,29 @@ class SortieController extends AbstractController
      *
      * @param Request $request
      * @return Response
+     * @Route("/publier/{idSortie}", name="sortie_publier")
+     */
+    public function public($idSortie)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($idSortie);
+
+        $etat = $em->getRepository(Etat::class)->find(2);
+
+        $sortie->setEtat($etat);
+
+        $em->persist($sortie);
+        $em->flush();
+        $this->addFlash("messageSucces", "Votre sortie a bien été publiée");
+        return $this->redirectToRoute("sortie_lister");
+    }
+
+    /**
+     * @param $idSortie
+     *
+     * @param Request $request
+     * @return Response
      * @Route("/afficher/{id}", name="sortie_afficher")
      */
     public function afficher($id, Request $request)
@@ -326,7 +349,7 @@ class SortieController extends AbstractController
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
 
-        $participants = $em->getRepository(Inscription::class )->findBy(['sortie'=>$id]);
+        $participants = $em->getRepository(Inscription::class)->findBy(['sortie' => $id]);
 
         return $this->render('sortie/sortie_afficher.html.twig', ['sortie' => $sortie, "participants" => $participants]);
     }

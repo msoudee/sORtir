@@ -101,7 +101,7 @@
                         <a class="btn btn-outline-info" href="{{ path('sortie_modifier',{'idSortie':sortie.id}) }}">Modifier</a>
                      {% endif %}
                      {% if action == "publier" %}
-                        <a class="btn btn-outline-success" href="#">Publier</a>
+                        <a class="btn btn-outline-success" href="{{ path('sortie_publier',{'idSortie':sortie.id}) }}">Publier</a>
                      {% endif %}
                      {% if action == "afficher" %}
                         <a class="btn btn-outline-primary" href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
