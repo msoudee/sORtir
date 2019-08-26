@@ -3,5 +3,24 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
-
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Mail</th>
+            <th scope="col">Désactiver</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.mail }}</td>
+                <td><a class="btn btn-outline-danger" href="{{ path("admin_desactiver", {"id":user.id}) }}">Désactiver</a></td>
+                <td><a class="btn btn-outline-danger" href="{{ path("admin_supprimer", {"id":user.id}) }}">Supprimer</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
