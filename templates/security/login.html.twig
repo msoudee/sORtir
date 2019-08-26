@@ -3,35 +3,40 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-    
-    <label for="inputUsername" class="sr-only">Identifiant</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus><br>
-    <label for="inputPassword" class="sr-only">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control"  required>
+    <h1 class="display-4 mt-5 mb-5" style="text-align: center">Connexion</h1>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <div class="col-6 offset-3">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Se souvenir de moi
-        </label>
+            {% if app.user %}
+                <div class="mb-3 alert alert-success">
+                    Vous êtes déjà connecté en tant que : {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                </div>
+            {% endif %}
+
+            {# Partie du formulaire relatif à l'identifiant #}
+            <label for="inputUsername">Identifiant</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus><br>
+
+            {# Partie du formulaire relatif au mot de passe #}
+            <label for="inputPassword">Mot de passe</label>
+            <input type="password" name="password" id="inputPassword" class="form-control"  required>
+
+            {# Champ invisible, gestion du token #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            {# Fonctionnalité "se souvenir de moi" #}
+            <div class="checkbox mb-4 mt-2">
+                <input type="checkbox" name="_remember_me" id="cbSeSouvenir">
+                <label for="cbSeSouvenir">Se souvenir de moi</label>
+            </div>
+
+            {# Bouton validation formulaire connexion #}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Connexion</button>
+        </form>
     </div>
-
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Connexion
-    </button>
-</form>
 {% endblock %}
