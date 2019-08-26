@@ -45,14 +45,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/modify", name="app_modify")
      */
-
     public function modify(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserModifyType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
             // encode the plain password
             $user->setPassword(
@@ -71,19 +70,20 @@ class SecurityController extends AbstractController
 
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$couverture->guessExtension();
+                $newFilename = $safeFilename . '.' . pathinfo($couverture->getClientOriginalName(), PATHINFO_EXTENSION);
 
                 // Move the file to the directory where brochures are stored
                 try {
-                    $couverture->move('img/', $newFilename);
+                    $couverture->move('img/profil/', $newFilename);
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
 
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
-                $media->setCouverture($newFilename);
+                $user->setPhoto($newFilename);
             }
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -91,10 +91,10 @@ class SecurityController extends AbstractController
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_modify');
+           // return $this->redirectToRoute('app_modify');
         }
 
-        return $this->render('security/modify.html.twig', [
+        return $this->render('security/modify.html.twig', ['user'=>$user,
             'modifyForm' => $form->createView(),
         ]);
     }
