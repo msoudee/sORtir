@@ -4,49 +4,49 @@
 
 {% block body %}
 
-    <h1 class="display-4 mt-5 mb-5" style="text-align: center">{{user.username}}</h1>
+    <h1 class="display-4" style="text-align: center">{{user.username}}</h1>
 
     <div class="row">
 
-        <div class="col-3 offset-1">
+        <div class="col-sm-3 offset-sm-1">
             <img class="rounded-circle mt-5" src="{{ asset("img/profil/" ~ user.photo) }}" width="100%">
         </div>
 
-        <div class="col-6">
+        <div class="col-sm-6 mt-3">
 
             <div class="input-group mb-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Nom</span>
                 </div>
-                <p class="form-control">{{ user.nom }}</p>
+                <p class="form-control" style="overflow:hidden; display:inline-block; text-overflow: ellipsis; white-space: nowrap;">{{ user.nom }}</p>
             </div>
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Prénom</span>
                 </div>
-                <p class="form-control">{{ user.prenom }}</p>
+                <p class="form-control" style="overflow:hidden; display:inline-block; text-overflow: ellipsis; white-space: nowrap;">{{ user.prenom }}</p>
             </div>
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Numéro de téléphone</span>
                 </div>
-                <p class="form-control">{{ user.telephone }}</p>
+                <p class="form-control" style="overflow:hidden; display:inline-block; text-overflow: ellipsis; white-space: nowrap;">{{ user.telephone }}</p>
             </div>
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Adresse mail</span>
                 </div>
-                <p class="form-control">{{ user.mail }}</p>
+                <p class="form-control" style="overflow:hidden; display:inline-block; text-overflow: ellipsis; white-space: nowrap;">{{ user.mail }}</p>
             </div>
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Site</span>
                 </div>
-                <p class="form-control">{{ user.site.libelle }}</p>
+                <p class="form-control" style="overflow:hidden; display:inline-block; text-overflow: ellipsis; white-space: nowrap;">{{ user.site.libelle }}</p>
             </div>
         </div>
 

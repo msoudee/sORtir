@@ -4,104 +4,74 @@
 
 {% block body %}
 
-    <h1>Créer une sortie</h1>
+    <h1 class="display-4 mt-5 mb-5" style="text-align: center">Créer une sortie</h1>
 
     {{ form_start(form_CreerSortie) }}
 
 
-        {{ form_errors(form_CreerSortie) }}
+    {{ form_errors(form_CreerSortie) }}
 
 
     <div class="row">
 
-        <div class="col-md-5">
-            Nom de la sortie :
+        <div class="col-sm-4 offset-sm-2">
             {{ form_row(form_CreerSortie.nom) }}
-        </div>
-
-        <div class="col-md-4">
-            Ville organisatrice :
-            <label class="form-control" id="villeOrganisatrice">{{ app.user.site.libelle }}  </label>
-
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-md-5">
-            Date et heure de la sortie :
             {{ form_row(form_CreerSortie.dateDebut) }}
-        </div>
-
-        <div class="col-md-4">
-            Ville :
-            <label class="form-control" id="ville"></label>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-5">
-            Date limite inscription :
             {{ form_row(form_CreerSortie.dateCloture) }}
-        </div>
-        <div class="col-md-4">
-            Lieu
-            {{ form_widget(form_CreerSortie.lieu) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-5">
-            nombre de places :
-            {{ form_widget(form_CreerSortie.nbinscriptionsmax) }}
-        </div>
-        <div class="col-md-4">
-            Rue
-            <label class="form-control" id="rue"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-5">
-            Durée :
-            {{ form_widget(form_CreerSortie.duree) }}
-        </div>
-        <div class="col-md-4">
-            Code Postal
-            <label class="form-control" id="codePostal"></label>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-5">
-            Description et infos :
-            {{ form_widget(form_CreerSortie.description) }}
-        </div>
-        <div class="col-md-2">
-            Latitude
-            <label class="form-control" id="latitude"></label>
+            {{ form_row(form_CreerSortie.nbinscriptionsmax) }}
+            {{ form_row(form_CreerSortie.duree) }}
+            {{ form_row(form_CreerSortie.description) }}
         </div>
 
-        <div class="col-md-2">
-            Longitude
-            <label class="form-control" id="longitude"></label>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="required">Ville organisatrice</label>
+                <label class="form-control" id="villeOrganisatrice">{{ app.user.site.libelle }}</label>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Ville</label>
+                <label class="form-control" id="ville"></label>
+            </div>
+
+            {{ form_row(form_CreerSortie.lieu) }}
+
+            <div class="form-group">
+                <label class="required">Rue</label>
+                <label class="form-control" id="rue"></label>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Code postal</label>
+                <label class="form-control" id="codePostal"></label>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="required">Latitude</label>
+                        <label class="form-control" id="latitude"></label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="required">Longitude</label>
+                        <label class="form-control" id="longitude"></label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-3">
-            <a href="{{ path('sortie_lister') }}" class="btn-block btn-secondary btn">Annuler</a>
+        <div class="col-sm-4 offset-sm-2 my-2">
+            {{ form_widget(form_CreerSortie.enregistrer) }}
         </div>
-    <div class="col-md-3">
-        {{ form_widget(form_CreerSortie.enregistrer) }}
-
-    </div><div class="col-md-3">
+        <div class="col-sm-4 my-2">
             {{ form_widget(form_CreerSortie.publier) }}
+        </div>
     </div>
-
-    </div>
-
-
 
     {{ form_end(form_CreerSortie) }}
 
@@ -112,26 +82,25 @@
         $("#creer_sortie_lieu").change(chargementVille);
 
 
-        function chargementVille(){
+        function chargementVille() {
 
             var lieu = $("#creer_sortie_lieu").val();
 
             $.ajax({
-                url:'ajax_lieu',
+                url: 'ajax_lieu',
                 type: "POST",
                 dataType: "json",
                 data: {
                     "nomLieu": lieu
                 },
                 async: true,
-                success: function (data)
-                {
+                success: function (data) {
                     console.log(data);
-                    $( '#rue' ).text(data.rue);
-                    $( '#ville' ).text(data.nomVille);
-                    $( '#codePostal' ).text(data.codePostal);
-                    $( '#latitude' ).text(data.latitude);
-                    $( '#longitude' ).text(data.longitude);
+                    $('#rue').text(data.rue);
+                    $('#ville').text(data.nomVille);
+                    $('#codePostal').text(data.codePostal);
+                    $('#latitude').text(data.latitude);
+                    $('#longitude').text(data.longitude);
 
                 }
             })

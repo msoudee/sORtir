@@ -37,7 +37,7 @@
                  <a class="nav-link" href="{{ path('app_login')}}">Se connecter</a>
                 {% endif %}
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="nav-link" href="{{ path('app_logout')}}">Logout</a>
+                    <a class="nav-link" href="{{ path('app_logout')}}">Se déconnecter</a>
                 {% endif %}
             </li>
         </ul>

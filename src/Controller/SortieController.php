@@ -308,7 +308,9 @@ class SortieController extends AbstractController
             return $this->redirectToRoute("sortie_lister");
         }
 
-        return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView(), 'idSortie' => $sortie->getId()]);
+        return $this->render('sortie/sortie_modifier.html.twig', [
+            'form_modifier_sortie' => $sortieForm->createView(),
+            'idSortie' => $sortie->getId()]);
     }
 
     /**

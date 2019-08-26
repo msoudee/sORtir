@@ -7,10 +7,10 @@
    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
       <div class="row mt-5 mb-5">
-         <div class="col-6">
+         <div class="col-sm-6">
             <h1 class="display-4">Accueil</h1>
          </div>
-         <div class="col-6">
+         <div class="col-sm-6">
             <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
             <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
          </div>
@@ -20,43 +20,43 @@
       {{ form_start(formFiltre) }}
 
       <div class="row">
-         <div class="form-group col-3">
+         <div class="form-group col-sm-3">
             <label>Site :</label>
             {{ form_widget(formFiltre.site) }}
          </div>
 
-         <div class="form-group col-3">
+         <div class="form-group col-sm-3">
             <label>Le nom de la sortie contient :</label>
             {{ form_widget(formFiltre.nom) }}
          </div>
 
-         <div class="form-group col-3">
+         <div class="form-group col-sm-3">
             <label>À partir de :</label>
             {{ form_widget(formFiltre.dateDebut) }}
          </div>
 
-         <div class="form-group col-3">
+         <div class="form-group col-sm-3">
             <label>Jusqu'au :</label>
             {{ form_widget(formFiltre.dateCloture) }}
          </div>
       </div>
 
       <div class="row">
-         <div class="form-group col-5 offset-1">
+         <div class="form-group col-sm-5 offset-sm-1">
             {{ form_widget(formFiltre.cbOrganisateur) }}
          </div>
 
-         <div class="form-group col-5">
+         <div class="form-group col-sm-5">
             {{ form_widget(formFiltre.cbInscrit) }}
          </div>
       </div>
 
       <div class="row">
-         <div class="form-group col-5 offset-1">
+         <div class="form-group col-sm-5 offset-sm-1">
             {{ form_widget(formFiltre.cbNonInscrit) }}
          </div>
 
-         <div class="form-group col-5">
+         <div class="form-group col-sm-5">
             {{ form_widget(formFiltre.cbTerminees) }}
          </div>
       </div>
@@ -122,8 +122,10 @@
          </tbody>
       </table>
 
-      <div class="row offset-10">
-         <a class="btn btn-success" href="{{ path('sortie_creer') }}">Créer une sortie</a>
+      <div class="row offset-sm-9">
+         <div class="col-sm">
+            <a class="btn btn-success btn-block" href="{{ path('sortie_creer') }}">Créer une sortie</a>
+         </div>
       </div>
 
    {% else %}

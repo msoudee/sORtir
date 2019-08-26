@@ -6,7 +6,7 @@
 
     <h1 class="display-4 mt-5 mb-5" style="text-align: center">Connexion</h1>
 
-    <div class="col-6 offset-3">
+    <div class="col-sm-6 offset-sm-3">
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
