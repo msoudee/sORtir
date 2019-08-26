@@ -1,132 +1,107 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Créer une sortie{% endblock %}
+{% block title %}Afficher une sortie{% endblock %}
 
 {% block body %}
 
-    <h1 class="text-center mt-4 mb-4">Afficher une sortie</h1>
+    <h1 class="display-4 mt-5 mb-5" style="text-align: center">Afficher une sortie</h1>
 
-
-    <div class="offset-1   ">
+    <div class="offset-sm-2">
         <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
+            <div class="col-sm-6">
+                <div class="my-4">
+                    <strong>Nom de la sortie :</strong>
+                    {{ sortie.nom }}
+                </div>
 
-                <strong>Nom de la sortie :</strong>
-                {{ sortie.nom }}
+                <div class="my-4">
+                    <strong>Date et heure de la sortie :</strong>
+                    {{ sortie.dateDebut|date("d/m/Y H:i") }}
+                </div>
 
+                <div class="my-4">
+                    <strong>Date limite inscription :</strong>
+                    {{ sortie.dateDebut|date("d/m/Y H:i") }}
+                </div>
+
+                <div class="my-4">
+                    <strong>Nombre de places :</strong>
+                    {{ sortie.nbInscriptionsMax }}
+                </div>
+
+                <div class="my-4">
+                    <strong>durée :</strong>
+                    {{ sortie.duree }}
+                </div>
+
+                <div class="my-4">
+                    <strong> Description et infos :</strong>
+                    {{ sortie.description }}
+                </div>
             </div>
-            <div class="mt-4 mb-4 col-md-6">
-                <strong>Ville organisatrice :</strong>
-                {{ sortie.dateDebut |date("d/m/Y H:i") }}
 
-            </div>
-        </div>
+            <div class="col-sm-6">
+                <div class="my-4">
+                    <strong>Ville organisatrice :</strong>
+                    {{ sortie.dateDebut |date("d/m/Y H:i") }}
+                </div>
 
-        <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
+                <div class="my-4">
+                    <strong>Lieu :</strong>
+                    {{ sortie.lieu.nom }}
+                </div>
 
-                <strong>Date et heure de la sortie :</strong>
-                {{ sortie.dateDebut|date("d/m/Y H:i") }}
+                <div class="my-4">
+                    <strong> Rue :</strong>
+                    {{ sortie.lieu.rue }}
+                </div>
 
-            </div>
-            <div class="mt-4 mb-4 col-md-6">
+                <div class="my-4">
+                    <strong>Rue :</strong>
+                    {{ sortie.lieu.ville.codePostal }}
+                </div>
 
-                <strong>Lieu :</strong>
-                {{ sortie.lieu.nom }}
+                <div class="my-4">
+                    <strong>Latitude :</strong>
+                    {{ sortie.lieu.latitude }}
+                </div>
 
-            </div>
-        </div>
-
-        <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
-
-                <strong>Date limite inscription :</strong>
-                {{ sortie.dateDebut|date("d/m/Y H:i") }}
-
-            </div>
-            <div class="mt-4 mb-4 col-md-6">
-
-                <strong> Rue :</strong>
-                {{ sortie.lieu.rue }}
-
-            </div>
-        </div>
-        <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
-
-                <strong>Nombre de places :</strong>
-                {{ sortie.nbInscriptionsMax }}
-
-            </div>
-            <div class="mt-4 mb-4 col-md-6">
-
-                <strong>Rue :</strong>
-                {{ sortie.lieu.ville.codePostal }}
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
-
-                <strong>durée :</strong>
-                {{ sortie.duree }}
-
-            </div>
-            <div class="mt-4 mb-4 col-md-6">
-
-                <strong>Latitude :</strong>
-                {{ sortie.lieu.latitude }}
-
-            </div>
-        </div>
-        <div class="row">
-            <div class=" mt-4 mb-4 col-md-6">
-
-                <strong>  Description et infos :</strong>
-                {{ sortie.description }}
-
-            </div>
-            <div class="mt-4 mb-4 col-md-6">
-
-                <strong> Longitude :</strong>
-                {{ sortie.lieu.longitude }}
-
+                <div class="my-4">
+                    <strong> Longitude :</strong>
+                    {{ sortie.lieu.longitude }}
+                </div>
             </div>
         </div>
     </div>
 
     <hr class="my-4"/>
 
-    <div class="row col-md-4 mt-5 offset-8 ">
+    <div class="row col-sm-4 mt-5 offset-sm-8 ">
 
         <fieldset>
-            <legend>Liste des participants </legend>
+            <legend>Liste des participants</legend>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Prénom</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {% for participant in participants %}
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td><strong>{{ participant.participant.username }}</strong></td>
-                    <td><a class="alert-link" href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a></td>
-
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Prénom</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                {% for participant in participants %}
+                    <tr>
+                        <td><strong>{{ participant.participant.username }}</strong></td>
+                        <td><a class="alert-link"
+                               href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </fieldset>
     </div>
-
-
-
-
-
 
 {% endblock %}
