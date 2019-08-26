@@ -38,5 +38,6 @@ security:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/modify$, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/sortie/lister$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/register$, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
