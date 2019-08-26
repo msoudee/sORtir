@@ -95,16 +95,16 @@
                         <a class="btn btn-outline-success" href="#">Publier</a>
                      {% endif %}
                      {% if action == "afficher" %}
-                        <a class="btn btn-outline-primary" href="#">Afficher</a>
+                        <a class="btn btn-outline-primary" href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
                      {% endif %}
                      {% if action == "annuler" %}
-                        <a class="btn btn-outline-danger" href="#">Annuler</a>
+                        <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
                      {% endif %}
                      {% if action == "desister" %}
-                        <a class="btn btn-outline-warning" href="#">Se désister</a>
+                        <a class="btn btn-outline-warning" href="{{ path('inscription_desister',{'id':sortie.id}) }}">Se désister</a>
                      {% endif %}
                      {% if action == "inscrire" %}
-                        <a class="btn btn-outline-success" href="#">S'inscrire</a>
+                        <a class="btn btn-outline-success" href="{{ path('inscription_inscrire',{'id':sortie.id}) }}">S'inscrire</a>
                      {% endif %}
                   {% endfor %}
                </td>

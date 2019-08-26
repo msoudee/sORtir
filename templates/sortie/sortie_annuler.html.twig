@@ -1,0 +1,68 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Créer une sortie{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center mt-4 mb-4">Annuler une sortie</h1>
+
+
+    <div class="offset-3">
+
+        <div class="row mt-4 mb-4">
+
+            Nom de la sortie :
+            {{ sortie.nom }}
+
+        </div>
+        <div class="row mt-4 mb-4">
+
+            Date de la sortie :
+            {{ sortie.dateDebut |date("d/m/Y H:i") }}
+
+        </div>
+
+        <div class="row mt-4 mb-4">
+
+            Ville organisatrice :
+            {{ app.user.site.libelle }}
+
+        </div>
+
+        <div class="row mt-4 mb-4">
+
+            Lieu :
+            {{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}
+
+        </div>
+        {{ form_start(form_annulerSortie) }}
+        <div class="row mt-4 mb-4">
+            <div class="col-md-6">
+
+
+                Description et infos :
+                {{ form_widget(form_annulerSortie.description) }}
+
+
+
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-md-4">
+                <a href="{{ path('sortie_lister') }}" class="btn-block btn-secondary btn">Annuler</a>
+            </div>
+            <div class="col-md-4">
+                {{ form_widget(form_annulerSortie.enregistrer) }}
+            </div>
+            {{ form_end(form_annulerSortie) }}
+
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

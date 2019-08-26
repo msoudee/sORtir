@@ -6,23 +6,27 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\User;
+use App\Form\AnnulerSortieType;
 use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @Route("/sortie")
  */
 class SortieController extends AbstractController
 {
+
+
     /**
      * @Route("/lister", name="sortie_lister")
+     * @param Request $request
+     * @return Response
      */
     public function lister(Request $request)
     {
@@ -276,7 +280,7 @@ class SortieController extends AbstractController
 
         $repoEtat = $em->getRepository(Etat::class);
 
-        if ($sortieForm->isSubmitted()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
             $etat = null;
             if ($sortieForm->get("publier")->isClicked()) {
@@ -301,6 +305,57 @@ class SortieController extends AbstractController
         }
 
         return $this->render('sortie/sortie_modifier.html.twig', ['form_CreerSortie' => $sortieForm->createView(), 'idSortie' => $sortie->getId()]);
+    }
+
+    /**
+     * @param $idSortie
+     *
+     * @param Request $request
+     * @return Response
+     * @Route("/afficher/{id}", name="sortie_afficher")
+     */
+    public function afficher($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        $participants = $em->getRepository(Inscription::class )->findBy(['sortie'=>$id]);
+
+        return $this->render('sortie/sortie_afficher.html.twig', ['sortie' => $sortie, "participants" => $participants]);
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @return Response
+     * @Route("/annuler/{id}", name="sortie_annuler")
+     */
+    public function annuler($id, Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $sortie = $em->getRepository(Sortie::class)->find($id);
+
+        $sortieForm = $this->createForm(AnnulerSortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+
+        if ($sortieForm->isSubmitted()) {
+
+            $etat = $em->getRepository(Etat::class)->find(6);
+
+            $sortie->setEtat($etat);
+
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash("messageSuccess", "Votre sortie a bien été annulée");
+
+            return $this->redirectToRoute("sortie_lister");
+        }
+
+        return $this->render('sortie/sortie_annuler.html.twig', ['form_annulerSortie' => $sortieForm->createView(), 'sortie' => $sortie]);
     }
 
     /**
@@ -365,5 +420,6 @@ class SortieController extends AbstractController
 
         return $response;
     }
+
 
 }
