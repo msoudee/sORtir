@@ -32,15 +32,16 @@ class InscriptionController extends AbstractController
 
         $nbInscrit = $em->getRepository(Inscription::class)->test($id);
 
+
         $sortie = $em->getRepository(Sortie::class)->find($id);
 
         $interval = $sortie->getDateCloture()->diff($sortie->getDateActuelle());
 
         if (!$dejaInscrit) {
 
-            if ($nbInscrit < $sortie->getNbInscriptionsMax()) {
+            if ($nbInscrit['nb'] < $sortie->getNbInscriptionsMax()) {
 
-                if ($interval->invert = 1) {
+                if ($interval->invert == 1) {
 
                     $inscription->setSortie($sortie);
                     $inscription->setParticipant($this->getUser());
