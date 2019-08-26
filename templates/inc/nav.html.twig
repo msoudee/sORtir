@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ path('sortie_lister') }}">
+    <a class="navbar-brand" href="{{ path('main_accueil') }}">
         <img src="{{ asset("img/logo.png") }}" width="30" height="30" class="d-inline-block align-top" alt="">
         SORTIR
     </a>
@@ -11,24 +11,22 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav  mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{{ path('sortie_lister') }}">Accueil<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ path('main_accueil') }}">Accueil<span class="sr-only">(current)</span></a>
             </li>
 
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('gestion_ville') }}">Ville</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('gestion_site') }}">Site</a>
-            </li>
-
+            {% if is_granted('ROLE_ADMIN') == true %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gestion_ville') }}">Gérer les villes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gestion_site') }}">Gérer les sites</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_users')}}">Gérer les utilisateurs</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_modify') }}">Mon profil</a>
-            </li>
-            <li class="nav-item">
-                {% if is_granted('ROLE_ADMIN') == true %}
-                    <a class="nav-link" href="{{ path('app_users')}}">Gestion des utilisateurs</a>
-                {% endif %}
             </li>
 
 
