@@ -3,22 +3,38 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <form method="post">
-    <h1>Mon Profil</h1>
-        {{ form_start(modifyForm) }}
-            <label>Pseudo</label>
-            {{ form_widget(modifyForm.username) }}
-            {{ form_row(modifyForm.prenom) }}
-            {{ form_row(modifyForm.nom) }}
-            {{ form_row(modifyForm.telephone) }}
-            {{ form_row(modifyForm.mail) }}
-            {{ form_row(modifyForm.password) }}
-            {{ form_row(modifyForm.site) }}
-            {{ form_row(modifyForm.photo) }}
-            <button class="btn">Enregistrer</button>
 
-        {{ form_end(modifyForm) }}
+    <h1 class="display-4">Mon profil</h1>
+    
+    {{ form_start(modifyForm) }}
+    
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ asset("img/profil.jpg") }}" width="75%">
+            </div>
+
+            <div class="col-5">
+                {{ form_row(modifyForm.username) }}
+                {{ form_row(modifyForm.prenom) }}
+                {{ form_row(modifyForm.nom) }}
+                {{ form_row(modifyForm.telephone) }}
+                {{ form_row(modifyForm.photo) }}
+            </div>
+
+            <div class="col-5">
+                {{ form_row(modifyForm.mail) }}
+                {{ form_row(modifyForm.password) }}
+                {{ form_row(modifyForm.site) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-10 offset-2 mt-4">
+                <button class="btn btn-success btn-block">Enregistrer</button>
+            </div>
+        </div>
 
 
-    </form>
+    {{ form_end(modifyForm) }}
+
 {% endblock %}
