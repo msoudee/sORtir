@@ -6,6 +6,7 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\Sortie;
 use App\Form\CreerSortieType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,25 +28,36 @@ class InscriptionController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $dejaInscrit =$em->getRepository(Inscription::class)->findOneBy(["sortie"=>$id, "participant" =>$this->getUser()->getId()]);
+        $dejaInscrit = $em->getRepository(Inscription::class)->findOneBy(["sortie" => $id, "participant" => $this->getUser()->getId()]);
+
+        $nbInscrit = $em->getRepository(Inscription::class)->test($id);
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
 
-        if(!$dejaInscrit) {
+        $interval = $sortie->getDateCloture()->diff($sortie->getDateActuelle());
 
-            $inscription->setSortie($sortie);
-            $inscription->setParticipant($this->getUser());
+        if (!$dejaInscrit) {
 
-            $em->persist($inscription);
-            $em->flush();
-            $this->addFlash("messageSuccess", "Vous êtes inscrit à la sortie " . $sortie->getNom());
-        }else{
+            if ($nbInscrit < $sortie->getNbInscriptionsMax()) {
+
+                if ($interval->invert = 1) {
+
+                    $inscription->setSortie($sortie);
+                    $inscription->setParticipant($this->getUser());
+
+                    $em->persist($inscription);
+                    $em->flush();
+                    $this->addFlash("messageSuccess", "Vous êtes inscrit à la sortie " . $sortie->getNom());
+                } else {
+                    $this->addFlash("messageErreur", "Vous ne pouvez plus vous inscrire à cette sortie car la date de cloture est dépassée " . $sortie->getNbInscriptionsMax());
+                }
+            } else {
+                $this->addFlash("messageErreur", "Vous ne pouvez plus vous inscrire à cette sortie car la capacité maximale est atteinte " . $sortie->getNbInscriptionsMax());
+            }
+        } else {
             $this->addFlash("messageErreur", "Vous êtes déjà inscrit à la sortie " . $sortie->getNom());
         }
-
-        return $this->redirectToRoute("sortie_lister");
-
-
+            return $this->redirectToRoute("sortie_lister");
     }
 
     /**
@@ -61,13 +73,13 @@ class InscriptionController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $dejaInscrit =$em->getRepository(Inscription::class)->findOneBy(["sortie"=>$id, "participant" =>$this->getUser()->getId()]);
+        $dejaInscrit = $em->getRepository(Inscription::class)->findOneBy(["sortie" => $id, "participant" => $this->getUser()->getId()]);
 
         $sortie = $em->getRepository(Sortie::class)->find($id);
 
-        if($dejaInscrit) {
+        if ($dejaInscrit) {
 
-          $em->remove($dejaInscrit);
+            $em->remove($dejaInscrit);
 
             $em->flush();
             $this->addFlash("messageSuccess", "Vous n'êtes  plus inscrit à la sortie " . $sortie->getNom());

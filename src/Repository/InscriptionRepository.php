@@ -47,4 +47,16 @@ class InscriptionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function test($value){
+        //SELECT COUNT(participant_id) FROM `inscription` WHERE sortie_id = 19
+        return $this->createQueryBuilder('ins')
+            ->select('COUNT(ins.participant)')
+            ->andWhere('ins.sortie = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
