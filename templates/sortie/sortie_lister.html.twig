@@ -5,8 +5,17 @@
 {% block body %}
 
    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-      <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
-      <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
+
+      <div class="row mt-5 mb-5">
+         <div class="col-6">
+            <h1 class="display-4">Accueil</h1>
+         </div>
+         <div class="col-6">
+            <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
+            <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
+         </div>
+      </div>
+
 
       {{ form_start(formFiltre) }}
 

@@ -4,13 +4,13 @@
 
 {% block body %}
 
-    <h1 class="display-4">Mon profil</h1>
+    <h1 class="display-4 mt-5 mb-5">Mon profil</h1>
     
     {{ form_start(modifyForm) }}
     
-        <div class="row">
-            <div class="col-2">
-                <img src="{{ asset("img/profil.jpg") }}" width="75%">
+        <div class="row mt-5">
+            <div class="col-2 mt-3">
+                <img class="rounded-circle" src="{{ asset("img/profil.jpg") }}" width="75%">
             </div>
 
             <div class="col-5">
