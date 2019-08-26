@@ -23,6 +23,7 @@ class UserModifyType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
+                'label' => 'Pseudo',
                 'required' => true
             ])
             ->add('password', RepeatedType::class, [
@@ -30,32 +31,37 @@ class UserModifyType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => false,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Vérification mot de passe'],
             ])
             ->add('nom', TextType::class, [
+                'label' => 'Nom',
                 'required' => true
             ])
             ->add('prenom', TextType::class, [
+                'label' => 'Prénom',
                 'required' => true
             ])
             ->add('telephone', TextType::class, [
+                'label' => 'Numéro de téléphone',
                 'required' => true,
                 'constraints'=> [new Length(10)],
             ])
             ->add('mail', EmailType::class, [
+                'label' => 'Adresse mail',
                 'required' => true
             ])
             ->add('site', EntityType::class, [
-            'class'=>Site::class,
-            'required'=> true,
-            'placeholder'=>"Choisir un site",
-            'choice_label'=>function(Site $site){
-                return $site->getLibelle();
+                'label' => 'Site',
+                'class'=>Site::class,
+                'required'=> true,
+                'placeholder'=>"Choisir un site",
+                'choice_label'=>function(Site $site){
+                    return $site->getLibelle();
             }
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Ajouter une image de profil',
+                'label' => 'Ajouter une photo de profil',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
