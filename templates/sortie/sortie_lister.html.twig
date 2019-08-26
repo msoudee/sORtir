@@ -4,131 +4,137 @@
 
 {% block body %}
 
-   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-      <div class="row mt-5 mb-5">
-         <div class="col-sm-6">
-            <h1 class="display-4">Accueil</h1>
-         </div>
-         <div class="col-sm-6">
-            <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>
-            <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>
-         </div>
-      </div>
-
-
-      {{ form_start(formFiltre) }}
-
-      <div class="row">
-         <div class="form-group col-sm-3">
-            <label>Site :</label>
-            {{ form_widget(formFiltre.site) }}
-         </div>
-
-         <div class="form-group col-sm-3">
-            <label>Le nom de la sortie contient :</label>
-            {{ form_widget(formFiltre.nom) }}
-         </div>
-
-         <div class="form-group col-sm-3">
-            <label>À partir de :</label>
-            {{ form_widget(formFiltre.dateDebut) }}
-         </div>
-
-         <div class="form-group col-sm-3">
-            <label>Jusqu'au :</label>
-            {{ form_widget(formFiltre.dateCloture) }}
-         </div>
-      </div>
-
-      <div class="row">
-         <div class="form-group col-sm-5 offset-sm-1">
-            {{ form_widget(formFiltre.cbOrganisateur) }}
-         </div>
-
-         <div class="form-group col-sm-5">
-            {{ form_widget(formFiltre.cbInscrit) }}
-         </div>
-      </div>
-
-      <div class="row">
-         <div class="form-group col-sm-5 offset-sm-1">
-            {{ form_widget(formFiltre.cbNonInscrit) }}
-         </div>
-
-         <div class="form-group col-sm-5">
-            {{ form_widget(formFiltre.cbTerminees) }}
-         </div>
-      </div>
-
-      <input type="submit" class="btn btn-primary btn-block" value="Rechercher">
-      {{ form_end(formFiltre) }}
+{#        <div class="row mt-5 mb-5">#}
+{#            <div class="col-sm-6">#}
+                <h1 class="display-4 mt-5 mb-5" style="text-align: center">Accueil</h1>
+{#            </div>#}
+{#            <div class="col-sm-6">#}
+{#                <p style="text-align: right">Date du jour : <strong>{{ dateDuJour }}</strong></p>#}
+{#                <P style="text-align: right">Participant : <strong>{{ participant }}</strong></P>#}
+{#            </div>#}
+{#        </div>#}
 
 
-      <br>
+        {{ form_start(formFiltre) }}
 
-      <table class="table table-striped">
-         <thead>
-         <tr>
-            <th scope="col">Nom de la sortie</th>
-            <th scope="col">Date</th>
-            <th scope="col">Clôture</th>
-            <th scope="col">Nombre d'inscrits</th>
-            <th scope="col">État</th>
-            <th scope="col">Inscrit</th>
-            <th scope="col">Organisateur</th>
-            <th scope="col">Actions</th>
-         </tr>
-         </thead>
-         <tbody>
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label>Site :</label>
+                {{ form_widget(formFiltre.site) }}
+            </div>
 
-         {% for sortie in sorties %}
+            <div class="form-group col-sm-3">
+                <label>Le nom de la sortie contient :</label>
+                {{ form_widget(formFiltre.nom) }}
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>À partir de :</label>
+                {{ form_widget(formFiltre.dateDebut) }}
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>Jusqu'au :</label>
+                {{ form_widget(formFiltre.dateCloture) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-5 offset-sm-1">
+                {{ form_widget(formFiltre.cbOrganisateur) }}
+            </div>
+
+            <div class="form-group col-sm-5">
+                {{ form_widget(formFiltre.cbInscrit) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-5 offset-sm-1">
+                {{ form_widget(formFiltre.cbNonInscrit) }}
+            </div>
+
+            <div class="form-group col-sm-5">
+                {{ form_widget(formFiltre.cbTerminees) }}
+            </div>
+        </div>
+
+        <input type="submit" class="btn btn-primary btn-block" value="Rechercher">
+        {{ form_end(formFiltre) }}
+
+        <br>
+
+        <table class="table table-striped">
+            <thead>
             <tr>
-               <td>{{ sortie.nom }}</td>
-               <td>{{ sortie.dateDebut|date("d/m/Y H:i") }}</td>
-               <td>{{ sortie.dateCloture|date("d/m/Y") }}</td>
-               <td align="center">{{ sortie.nbInscriptions }}/{{ sortie.nbInscriptionsMax }}</td>
-               <td>{{ sortie.etat.libelle }}</td>
-               {% if sortie.inscrit %}
-                  <td align="center"><img src="{{ asset("img/checked.png") }}" width="24px"></td>
-               {% else %}
-                  <td align="center"><img src="{{ asset("img/unchecked.png") }}" width="24px"></td>
-               {% endif %}
-               <td><a href="{{ path('app_profile', { 'id':sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a></td>
-               <td>
-                  {% for action in sortie.actions %}
-                     {% if action == "modifier" %}
-                        <a class="btn btn-outline-info" href="{{ path('sortie_modifier',{'idSortie':sortie.id}) }}">Modifier</a>
-                     {% endif %}
-                     {% if action == "publier" %}
-                        <a class="btn btn-outline-success" href="{{ path('sortie_publier',{'idSortie':sortie.id}) }}">Publier</a>
-                     {% endif %}
-                     {% if action == "afficher" %}
-                        <a class="btn btn-outline-primary" href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
-                     {% endif %}
-                     {% if action == "annuler" %}
-                        <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
-                     {% endif %}
-                     {% if action == "desister" %}
-                        <a class="btn btn-outline-warning" href="{{ path('inscription_desister',{'id':sortie.id}) }}">Se désister</a>
-                     {% endif %}
-                     {% if action == "inscrire" %}
-                        <a class="btn btn-outline-success" href="{{ path('inscription_inscrire',{'id':sortie.id}) }}">S'inscrire</a>
-                     {% endif %}
-                  {% endfor %}
-               </td>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Nombre d'inscrits</th>
+                <th scope="col">État</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
             </tr>
-         {% endfor %}
-         </tbody>
-      </table>
+            </thead>
+            <tbody>
 
-      <div class="row offset-sm-9">
-         <div class="col-sm">
-            <a class="btn btn-success btn-block" href="{{ path('sortie_creer') }}">Créer une sortie</a>
-         </div>
-      </div>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateDebut|date("d/m/Y H:i") }}</td>
+                    <td>{{ sortie.dateCloture|date("d/m/Y") }}</td>
+                    <td align="center">{{ sortie.nbInscriptions }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    {% if sortie.inscrit %}
+                        <td align="center"><img src="{{ asset("img/checked.png") }}" width="24px"></td>
+                    {% else %}
+                        <td align="center"><img src="{{ asset("img/unchecked.png") }}" width="24px"></td>
+                    {% endif %}
+                    <td>
+                        <a href="{{ path('app_profile', { 'id':sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a>
+                    </td>
+                    <td>
+                        {% for action in sortie.actions %}
+                            {% if action == "modifier" %}
+                                <a class="btn btn-outline-info"
+                                   href="{{ path('sortie_modifier',{'idSortie':sortie.id}) }}">Modifier</a>
+                            {% endif %}
+                            {% if action == "publier" %}
+                                <a class="btn btn-outline-success"
+                                   href="{{ path('sortie_publier',{'idSortie':sortie.id}) }}">Publier</a>
+                            {% endif %}
+                            {% if action == "afficher" %}
+                                <a class="btn btn-outline-primary"
+                                   href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
+                            {% endif %}
+                            {% if action == "annuler" %}
+                                <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
+                            {% endif %}
+                            {% if action == "desister" %}
+                                <a class="btn btn-outline-warning"
+                                   href="{{ path('inscription_desister',{'id':sortie.id}) }}">Se désister</a>
+                            {% endif %}
+                            {% if action == "inscrire" %}
+                                <a class="btn btn-outline-success"
+                                   href="{{ path('inscription_inscrire',{'id':sortie.id}) }}">S'inscrire</a>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-   {% else %}
-      <h1>VOUS N'ÊTES PAS CONNECTÉ</h1>
-   {% endif %}
+        <div class="row offset-sm-9">
+            <div class="col-sm">
+                <a class="btn btn-success btn-block" href="{{ path('sortie_creer') }}">Créer une sortie</a>
+            </div>
+        </div>
+
+    {% else %}
+        <h1>VOUS N'ÊTES PAS CONNECTÉ</h1>
+    {% endif %}
 {% endblock %}
