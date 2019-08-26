@@ -198,7 +198,11 @@ class SortieController extends AbstractController
                 switch ($sortie->getEtat()->getLibelle()) {
                     case "Ouverte":
                     case "Clôturée":
-                        $sortie->setActions(["afficher", "inscrire"]);
+                        if($sortie->getNbInscriptions() < $sortie->getNbInscriptionsMax()){
+                            $sortie->setActions(["afficher", "inscrire"]);
+                        } else {
+                            $sortie->setActions(["afficher"]);
+                        }
                         break;
                     case "En création":
                         $sortie->setActions([]);
