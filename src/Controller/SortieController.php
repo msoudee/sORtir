@@ -312,7 +312,6 @@ class SortieController extends AbstractController
                 $etat = $repoEtat->find(1);
             }
 
-
             $user = $this->getUser();
             $site = $user->getSite();
             $sortie->setSite($site);
@@ -327,7 +326,7 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/sortie_modifier.html.twig', [
             'form_modifier_sortie' => $sortieForm->createView(),
-            'idSortie' => $sortie->getId()]);
+            'sortie' => $sortie]);
     }
 
     /**
@@ -477,7 +476,7 @@ class SortieController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $repoLieu = $em->getRepository(Lieu::class);
-        $lieux = $repoLieu->findBy(["ville" => $idVille]);;
+        $lieux = $repoLieu->findBy(["ville" => $idVille]);
 
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
