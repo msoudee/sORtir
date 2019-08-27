@@ -38,7 +38,11 @@ class AdminController extends AbstractController
         ;
         $entityManager = $this->getDoctrine()->getManager();
         $user = $repository->find($id);
-        $user->setActif(0);
+        if($user->getActif()){
+            $user->setActif(0);
+        }else{
+            $user->setActif(1);
+        }
         $entityManager->persist($user);
         $entityManager->flush();
 

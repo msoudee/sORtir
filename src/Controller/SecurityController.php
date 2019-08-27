@@ -27,13 +27,6 @@ class SecurityController extends AbstractController
         //    $this->redirectToRoute('target_path');
         // }
 
-        if ($this->getUser()) {
-            if($this->getUser()->getActif()){
-                $error = "Compte désactivé";
-                return $this->redirectToRoute('app_logout');
-            }
-        }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
