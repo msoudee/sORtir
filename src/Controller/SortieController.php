@@ -7,11 +7,13 @@ use App\Entity\Inscription;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Ville;
 use App\Form\AnnulerSortieType;
 use App\Form\FiltreType;
 use DateTime;
 use App\Form\CreerSortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -236,7 +238,13 @@ class SortieController extends AbstractController
         $repoEtat = $em->getRepository(Etat::class);
 
 
+
+
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            $idLieu = $request->get('lieux');
+
+            $lieu = $em->getRepository(Lieu::class)->find($idLieu);
+            $sortie->setLieu($lieu);
 
             $etat = null;
             if ($sortieForm->get("publier")->isClicked()) {
@@ -320,7 +328,7 @@ class SortieController extends AbstractController
      * @return Response
      * @Route("/publier/{idSortie}", name="sortie_publier")
      */
-    public function public($idSortie)
+    public function publier($idSortie)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -448,6 +456,27 @@ class SortieController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * @Route("/ajax_ville", name="ville_ajax")
+     */
+    public function ajaxVilleAction(Request $request)
+    {
+        /* on récupère la valeur envoyée par la vue */
+        $idVille = $request->get('nomVille');
+
+        $em = $this->getDoctrine()->getManager();
+        $repoLieu = $em->getRepository(Lieu::class);
+        $lieux = $repoLieu->findBy(["ville" => $idVille]);;
+
+        /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
+         * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
+         */
+        return new JsonResponse($lieux);
+//        $response->headers->set('Content-Type', 'application/json');
+
+  //      return $response;
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -38,12 +39,13 @@ class CreerSortieType extends AbstractType
             ->add('description',TextareaType::class, [
                 'label' => 'Infomations et description'
             ])
-            ->add('lieu', EntityType::class, [
-                'class'=>Lieu::class,
-                'label' => 'Lieu',
-                'placeholder'=>"- Choisir un lieu -",
-                'choice_label'=>function(Lieu $lieu){
-                    return $lieu->getNom();
+            ->add('ville', EntityType::class, [
+                'class'=>Ville::class,
+                'mapped' => false,
+                'label' => 'Ville',
+                'placeholder'=>"- Choisir une ville -",
+                'choice_label'=>function(Ville $ville){
+                    return $ville->getNom();
                 }
             ])
             ->add('enregistrer', SubmitType::class, [

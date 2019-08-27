@@ -68,7 +68,7 @@ class UserModifyType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '102400k',
-
+                        'mimeTypes' => ['image/*'],
                         'mimeTypesMessage' => 'Le format du fichier n\'est pas valide',
                     ])
                 ],
