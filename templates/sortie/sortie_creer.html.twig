@@ -29,20 +29,24 @@
                 <label class="form-control" id="villeOrganisatrice">{{ app.user.site.libelle }}</label>
             </div>
 
-            <div class="form-group">
-                <label class="required">Ville</label>
-                <label class="form-control" id="ville"></label>
-            </div>
+            {{ form_row(form_CreerSortie.ville) }}
 
             <div class="row">
                 <div class="col-9">
-                    {{ form_row(form_CreerSortie.lieu) }}
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1"> Lieu :</label>
+                        <select class="form-control" id="creer_sortie_lieu" name="lieux">
+
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-3">
                     <div class="form-group">
                         <label class="required">Nouveau</label>
-                        <a class="form-control btn btn-light" href="{{ path('gestion_nouveau_lieu') }}"><img src="{{ asset('img/add_location.png') }}" height="90%"></a>
+                        <a class="form-control btn btn-light" href="{{ path('gestion_nouveau_lieu') }}"><img
+                                    src="{{ asset('img/add_location.png') }}" height="90%"></a>
                     </div>
                 </div>
             </div>
@@ -90,10 +94,12 @@
         // A $( document ).ready() block.
         //$( document ).ready(chargementVille)
 
-        $("#creer_sortie_lieu").change(chargementVille);
+
+        $("#creer_sortie_ville").change(chargementVille);
+        $("#creer_sortie_lieu").change(chargementLieu);
 
 
-        function chargementVille() {
+        function chargementLieu() {
 
             var lieu = $("#creer_sortie_lieu").val();
 
@@ -108,7 +114,6 @@
                 success: function (data) {
                     console.log(data);
                     $('#rue').text(data.rue);
-                    $('#ville').text(data.nomVille);
                     $('#codePostal').text(data.codePostal);
                     $('#latitude').text(data.latitude);
                     $('#longitude').text(data.longitude);
@@ -116,5 +121,30 @@
                 }
             })
         }
+
+        function chargementVille() {
+
+            var ville = $("#creer_sortie_ville").val();
+            console.log(ville);
+            $.ajax({
+                url: 'ajax_ville',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "nomVille": ville
+                },
+                async: true,
+                success: function (data) {
+                    $("#creer_sortie_lieu").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var id = data[i].id;
+                        var nom = data[i].nom;
+                        $("#creer_sortie_lieu").append("<option value=" + id + " selected='selected'>" + nom + "</option>");
+                    }
+                    chargementLieu();
+                }
+            })
+        }
+
     </script>
 {% endblock %}

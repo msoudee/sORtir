@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(UserModifyType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // encode the plain password
             $user->setPassword(
