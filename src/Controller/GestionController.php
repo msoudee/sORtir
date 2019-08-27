@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Site;
 use App\Entity\Ville;
 use App\Form\EnregistrerVilleType;
@@ -72,6 +73,7 @@ class GestionController extends AbstractController
 
         return $this->redirectToRoute("gestion_ville");
     }
+
     /**
      * @Route("/sites", name="gestion_site")
      */
@@ -128,4 +130,29 @@ class GestionController extends AbstractController
 
         return $this->redirectToRoute("gestion_site");
     }
+
+    /**
+     * @Route("/lieu/ajout", name="gestion_nouveau_lieu")
+     */
+    public function ajouterUnLieu(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Lieu::class);
+
+        $lieu = new Site();
+
+        $searchSiteForm = $this->createForm(SearchSiteType::class, $searchSite);
+
+        $searchSiteForm->handleRequest($request);
+        if ($searchSiteForm->isSubmitted()) {
+
+        }
+
+        return $this->render('gestion/gestion_site.html.twig', [
+            "sites" => $sites,
+            "newSiteForm" => $newSiteForm->createView(),
+            "searchSiteForm" => $searchSiteForm->createView()
+        ]);
+    }
+
 }
