@@ -45,8 +45,9 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label class="required">Nouveau</label>
-                        <a class="form-control btn btn-light" href="{{ path('gestion_nouveau_lieu') }}"><img
-                                    src="{{ asset('img/add_location.png') }}" height="90%"></a>
+                        <button type="button" class="form-control btn btn-light" data-toggle="modal" data-target="#myModal">
+                            <img src="{{ asset('img/add_location.png') }}" height="90%">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -89,6 +90,34 @@
     </div>
 
     {{ form_end(form_CreerSortie) }}
+
+    <div id="myModal" class="modal hide fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="display-4">Ajout lieu</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    {{ form_start(formNouveauLieu) }}
+                    {{ form_row(formNouveauLieu.nom) }}
+                    {{ form_row(formNouveauLieu.ville) }}
+                    {{ form_row(formNouveauLieu.rue) }}
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(formNouveauLieu.latitude) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(formNouveauLieu.longitude) }}
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-success btn-block my-4" value="Enregistrer nouveau lieu">
+                    {{ form_end(formNouveauLieu) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="application/javascript">
         // A $( document ).ready() block.

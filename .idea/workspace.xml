@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36b4e4dd-50f1-4025-a54c-86d368d82d0d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/gestion/gestion_ville.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/GestionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/GestionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/SortieController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SortieController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/FiltreType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/FiltreType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inc/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inc/nav.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_lister.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/NouveauLieuType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/NouveauLieuType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/gestion/gestion_ajout_lieu.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sortie/sortie_creer.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +138,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/sortie" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/gestion" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -148,14 +147,15 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
+    <property name="settings.editor.selected.configurable" value="Symfony2.SettingsForm" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp64\www\sORtir\templates\gestion" />
+      <recent name="C:\wamp64\www\sORtir\public\img" />
+      <recent name="C:\wamp64\www\sORtir\templates\main" />
       <recent name="C:\wamp64\www\sORtir\templates\sortie" />
       <recent name="C:\wamp64\www\sORtir\public\css" />
-      <recent name="C:\wamp64\www\sORtir\public\js" />
-      <recent name="C:\wamp64\www\sORtir\templates" />
-      <recent name="C:\wamp64\www\sORtir\public\img" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -189,7 +189,11 @@
       <workItem from="1566296085244" duration="4000" />
       <workItem from="1566311599382" duration="1221000" />
       <workItem from="1566370284717" duration="9308000" />
-      <workItem from="1566457487281" duration="20421000" />
+      <workItem from="1566457487281" duration="20539000" />
+      <workItem from="1566543907452" duration="12324000" />
+      <workItem from="1566561017848" duration="4565000" />
+      <workItem from="1566803187729" duration="21714000" />
+      <workItem from="1566889688508" duration="7858000" />
     </task>
     <servers />
   </component>

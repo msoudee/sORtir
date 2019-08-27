@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\AnnulerSortieType;
 use App\Form\FiltreType;
+use App\Form\NouveauLieuType;
 use DateTime;
 use App\Form\CreerSortieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -270,7 +271,20 @@ class SortieController extends AbstractController
             return $this->redirectToRoute("sortie_lister");
         }
 
-        return $this->render('sortie/sortie_creer.html.twig', ['form_CreerSortie' => $sortieForm->createView()]);
+        // FORMULAIRE MODAL
+        $lieu = new Lieu();
+        $formNouveauLieu = $this->createForm(NouveauLieuType::class, $lieu);
+
+        $formNouveauLieu->handleRequest($request);
+        if ($formNouveauLieu->isSubmitted()) {
+            $em->persist($lieu);
+            $em->flush();
+        }
+
+        return $this->render('sortie/sortie_creer.html.twig', [
+            'form_CreerSortie' => $sortieForm->createView(),
+            'formNouveauLieu' => $formNouveauLieu->createView()
+        ]);
     }
 
     /**
