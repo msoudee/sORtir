@@ -112,8 +112,10 @@
                             {{ form_row(formNouveauLieu.longitude) }}
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-success btn-block my-4" value="Enregistrer nouveau lieu">
                     {{ form_end(formNouveauLieu) }}
+                    <button id="btnEnregistrerLieu" class="btn btn-success btn-block my-4 " data-dismiss="modal">
+                        Enregistrer nouveau lieu
+                    </button>
                 </div>
             </div>
         </div>
@@ -123,9 +125,16 @@
         // A $( document ).ready() block.
         //$( document ).ready(chargementVille)
 
-
         $("#creer_sortie_ville").change(chargementVille);
         $("#creer_sortie_lieu").change(chargementLieu);
+        $("#btnEnregistrerLieu").click(function(){
+            ajouterLieu();
+            $("#nouveau_lieu_nom").val("");
+            $("#nouveau_lieu_ville").val("");
+            $("#nouveau_lieu_rue").val("");
+            $("#nouveau_lieu_latitude").val("");
+            $("#nouveau_lieu_longitude").val("");
+        });
 
 
         function chargementLieu() {
@@ -171,6 +180,35 @@
                         $("#creer_sortie_lieu").append("<option value=" + id + " selected='selected'>" + nom + "</option>");
                     }
                     chargementLieu();
+                }
+            })
+        }
+
+        function ajouterLieu() {
+            var nom = $("#nouveau_lieu_nom").val();
+            var ville = $("#nouveau_lieu_ville").val();
+            var rue = $("#nouveau_lieu_rue").val();
+            var lat = $("#nouveau_lieu_latitude").val();
+            var long = $("#nouveau_lieu_longitude").val();
+
+            $.ajax({
+                url: 'ajax_nouveau_lieu',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "nom": nom,
+                    "ville": ville,
+                    "rue": rue,
+                    "lat": lat,
+                    "long": long
+                },
+                async: true,
+                success: function (data) {
+                    $('#creer_sortie_ville option').filter(function(){
+                        return this.value == data.newVille;
+                    }).prop("selected", true);
+
+                    $('#creer_sortie_ville').change();
                 }
             })
         }

@@ -271,21 +271,16 @@ class SortieController extends AbstractController
             return $this->redirectToRoute("sortie_lister");
         }
 
-        // FORMULAIRE MODAL
         $lieu = new Lieu();
         $formNouveauLieu = $this->createForm(NouveauLieuType::class, $lieu);
-
-        $formNouveauLieu->handleRequest($request);
-        if ($formNouveauLieu->isSubmitted()) {
-            $em->persist($lieu);
-            $em->flush();
-        }
 
         return $this->render('sortie/sortie_creer.html.twig', [
             'form_CreerSortie' => $sortieForm->createView(),
             'formNouveauLieu' => $formNouveauLieu->createView()
         ]);
     }
+
+
 
     /**
      * @param $idSortie
@@ -317,7 +312,6 @@ class SortieController extends AbstractController
                 $etat = $repoEtat->find(1);
             }
 
-
             $user = $this->getUser();
             $site = $user->getSite();
             $sortie->setSite($site);
@@ -332,7 +326,7 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/sortie_modifier.html.twig', [
             'form_modifier_sortie' => $sortieForm->createView(),
-            'idSortie' => $sortie->getId()]);
+            'sortie' => $sortie]);
     }
 
     /**
@@ -482,7 +476,7 @@ class SortieController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $repoLieu = $em->getRepository(Lieu::class);
-        $lieux = $repoLieu->findBy(["ville" => $idVille]);;
+        $lieux = $repoLieu->findBy(["ville" => $idVille]);
 
         /* la réponse doit être encodée en JSON ou XML, on choisira le JSON
          * la doc de Symfony est bien faite si vous devez renvoyer un objet         *
@@ -491,6 +485,35 @@ class SortieController extends AbstractController
 //        $response->headers->set('Content-Type', 'application/json');
 
   //      return $response;
+    }
+
+    /**
+     * @Route("/ajax_nouveau_lieu", name="ajax_nouveau_lieu")
+     */
+    public function ajaxNouveauLieu(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repoVille = $em->getRepository(Ville::class);
+
+        $lieu = new Lieu();
+        $ville = $repoVille->find($request->get('ville'));
+
+        $lieu->setNom($request->get('nom'));
+        $lieu->setVille($ville);
+        $lieu->setRue($request->get('rue'));
+        $lieu->setLatitude($request->get('lat'));
+        $lieu->setLongitude($request->get('long'));
+
+        $em->persist($lieu);
+        $em->flush();
+
+        $response = new Response(json_encode(array(
+            'newVille' => $lieu->getVille()->getId(),
+            'newLieu' => $lieu->getNom()
+        )));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
 

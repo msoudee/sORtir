@@ -24,12 +24,14 @@
                 <label class="form-control" id="villeOrganisatrice">{{ app.user.site.libelle }}</label>
             </div>
 
-            <div class="form-group">
-                <label class="required">Ville</label>
-                <label class="form-control" id="ville"></label>
-            </div>
+            {{ form_row(form_modifier_sortie.ville) }}
 
-            {{ form_row(form_modifier_sortie.lieu) }}
+            <div class="form-group">
+                <label for="exampleFormControlSelect1"> Lieu :</label>
+                <select class="form-control" id="creer_sortie_lieu" name="lieux">
+
+                </select>
+            </div>
 
             <div class="form-group">
                 <label class="required">Rue</label>
@@ -63,7 +65,7 @@
 
         <div class="col-sm-2 offset-sm-2 my-2">
             <div class="form-group">
-                <a href="{{ path('sortie_supprimer',{'id':idSortie}) }}" class="btn-block btn-danger btn">Supprimer</a>
+                <a href="{{ path('sortie_supprimer',{'id':sortie.id}) }}" class="btn-block btn-danger btn">Supprimer</a>
             </div>
         </div>
 
@@ -80,9 +82,10 @@
 
     <script type="application/javascript">
         // A $( document ).ready() block.
-        $(document).ready(chargementVille);
+       // $(document).ready(chargementVille);
+        $(document).ready(chargement);
 
-        $("#creer_sortie_lieu").change(chargementVille);
+        /*$("#creer_sortie_lieu").change(chargementVille);
 
 
         function chargementVille() {
@@ -107,6 +110,81 @@
 
                 }
             })
+        }*/
+
+        $("#creer_sortie_lieu").change(chargementLieu);
+        $("#creer_sortie_ville").change(chargementVille);
+
+
+        function chargementLieu() {
+
+            var lieu = $("#creer_sortie_lieu").val();
+
+            $.ajax({
+                url: '../ajax_lieu',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "nomLieu": lieu
+                },
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    $('#rue').text(data.rue);
+                    $('#codePostal').text(data.codePostal);
+                    $('#latitude').text(data.latitude);
+                    $('#longitude').text(data.longitude);
+
+                }
+            })
         }
+
+        function chargementVille() {
+
+            var ville = $("#creer_sortie_ville").val();
+
+            $.ajax({
+                url: '../ajax_ville',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "nomVille": ville
+                },
+                async: true,
+                success: function (data) {
+                    $("#creer_sortie_lieu").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var id = data[i].id;
+                        var nom = data[i].nom;
+                        $("#creer_sortie_lieu").append("<option value=" + id + ">" + nom + "</option>");
+                    }
+
+                    chargement2();
+                }
+            })
+        }
+
+        function chargement(){
+
+            $('#creer_sortie_ville option').filter(function () {
+                return this.value == "{{ sortie.lieu.ville.id }}";
+            }).prop("selected", true);
+
+            $('#creer_sortie_ville').change();
+
+        }
+        function chargement2(){
+            console.log("identifiant lieu {{ sortie.lieu.nom }}");
+
+            $('#creer_sortie_lieu option').filter(function () {
+                console.log("je passe ici");
+                console.log(this.text);
+                return this.text == "{{ sortie.lieu.nom }}";
+
+            }).prop("selected", true);
+
+            chargementLieu();
+        }
+
     </script>
 {% endblock %}
