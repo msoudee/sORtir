@@ -31,7 +31,18 @@ class AdminController extends AbstractController
      * @Route("/users/desac/{id}", name="admin_desactiver")
      */
     public function desactivate(int $id){
+        $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(User::class)
+        ;
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $repository->find($id);
+        $user->setActif(0);
+        $entityManager->persist($user);
+        $entityManager->flush();
 
+        return $this->redirectToRoute('app_users');
     }
 
     /**
