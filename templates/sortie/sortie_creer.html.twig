@@ -34,7 +34,18 @@
                 <label class="form-control" id="ville"></label>
             </div>
 
-            {{ form_row(form_CreerSortie.lieu) }}
+            <div class="row">
+                <div class="col-9">
+                    {{ form_row(form_CreerSortie.lieu) }}
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="required">Nouveau</label>
+                        <a class="form-control btn btn-light" href="{{ path('gestion_nouveau_lieu') }}"><img src="{{ asset('img/add_location.png') }}" height="90%"></a>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="required">Rue</label>
