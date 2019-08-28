@@ -6,9 +6,10 @@
 
     <h1 class="display-4 mt-5 mb-5" style="text-align: center">Afficher une sortie</h1>
 
-    <div class="offset-sm-2">
+
         <div class="row">
-            <div class="col-sm-6">
+            <div id="my_osm_widget_map" class="col-sm-4"></div>
+            <div class="col-sm-4">
                 <div class="my-4">
                     <strong>Nom de la sortie :</strong>
                     {{ sortie.nom }}
@@ -40,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="my-4">
                     <strong>Ville organisatrice :</strong>
                     {{ sortie.dateDebut |date("d/m/Y H:i") }}
@@ -71,37 +72,67 @@
                     {{ sortie.lieu.longitude }}
                 </div>
             </div>
+
+
         </div>
-    </div>
+
 
     <hr class="my-4"/>
+    <div class="row offset-4">
 
-    <div class="row col-sm-4 mt-5 offset-sm-8 ">
+        <div class=" col-sm-6 mt-5 ">
 
-        <fieldset>
-            <legend>Liste des participants</legend>
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Pseudo</th>
-                    <th scope="col">Prénom</th>
-                </tr>
-                </thead>
-                <tbody>
+                <h3 class="h3">Liste des participants</h3>
 
-                {% for participant in participants %}
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                        <td><strong>{{ participant.participant.username }}</strong></td>
-                        <td><a class="alert-link"
-                               href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a>
-                        </td>
-
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Prénom</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </fieldset>
+                    </thead>
+                    <tbody>
+
+                    {% for participant in participants %}
+                        <tr>
+                            <td><strong>{{ participant.participant.username }}</strong></td>
+                            <td><a class="alert-link"
+                                   href="{{ path('app_profile', { 'id':participant.participant.id }) }}">{{ participant.participant.prenom }}</a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+        </div>
+
     </div>
+
+
+
+    <!-- Fichiers Javascript -->
+
+    <script type="text/javascript">
+        var mymap = L.map('my_osm_widget_map', { /* use the same name as your <div id=""> */
+            center: ['{{ sortie.lieu.latitude }}', '{{ sortie.lieu.longitude}}'], /* set GPS Coordinates */
+            zoom: 13, /* define the zoom level */
+            zoomControl: false, /* false = no zoom control buttons displayed */
+            scrollWheelZoom: false /* false = scrolling zoom on the map is locked */
+        });
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmFraW0iLCJhIjoiY2p6djI0MXl5MGttNjNudXRraWJkb2hqYyJ9.UBzRQGEqB8xR60GSngC1Lw', { /* set your personal MapBox Access Token */
+            maxZoom: 20, /* zoom limit of the map */
+            attribution: 'Données &copy; Contributeurs <a href="http://openstreetmap.org">OpenStreetMap</a> + ' +
+                '<a href="http://mapbox.com">Mapbox</a> | ' +
+                '<a href="https://creativecommons.org/licenses/by/2.0/">CC-BY</a> ' +
+                'Guillaume Rouan 2016', /* set the map's caption */
+            id: 'mapbox.streets' /* mapbox.light / dark / streets / outdoors / satellite */
+        }).addTo(mymap);
+
+        L.marker(['{{ sortie.lieu.latitude }}','{{ sortie.lieu.longitude}}']).addTo(mymap); /* set your location's GPS Coordinates : [LAT,LON] */
+
+    </script>
 
 {% endblock %}
