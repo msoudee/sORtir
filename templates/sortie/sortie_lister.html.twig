@@ -111,7 +111,9 @@
                                    href="{{ path('sortie_afficher',{'id':sortie.id}) }}">Afficher</a>
                             {% endif %}
                             {% if action == "annuler" %}
-                                <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
+                                {% if not is_granted('ROLE_ADMIN') %}
+                                    <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
+                                {% endif %}
                             {% endif %}
                             {% if action == "desister" %}
                                 <a class="btn btn-outline-warning"
@@ -122,6 +124,9 @@
                                    href="{{ path('inscription_inscrire',{'id':sortie.id}) }}">S'inscrire</a>
                             {% endif %}
                         {% endfor %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="btn btn-outline-danger" href="{{ path('sortie_annuler',{'id':sortie.id}) }}">Annuler</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
