@@ -28,7 +28,7 @@ class GestionController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $repoVille = $em->getRepository(Ville::class);
 
-        $villes = $repoVille->findAll();
+        $villes = $repoVille->findAllOrdererByName();
 
         $searchCity = new Ville();
         $searchCityForm = $this->createForm(RechercherVilleType::class, $searchCity);
@@ -83,7 +83,7 @@ class GestionController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Site::class);
 
-        $sites = $repo->findAll();
+        $sites = $repo->findAllOrdererByName();
 
         $searchSite = new Site();
         $newSite = new Site();
