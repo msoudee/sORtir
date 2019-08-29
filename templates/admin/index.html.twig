@@ -26,6 +26,16 @@
         </tbody>
 
     </table>
-    <a href="{{ path('app_register') }}" class="btn btn-success">Ajouter un utilisateur</a><br>
-    <a href="{{ path('csv_reader') }}" class="btn btn-success">Importer fichier csv</a><br>
+    <div class="row">
+        <div class="col-3">
+            <a href="{{ path('app_register') }}" class="btn btn-success btn-block">Ajouter un utilisateur</a><br>
+        </div>
+        <div class="col-3">
+            <form action="{{path('csv_reader')}}" method="post" enctype="multipart/form-data">
+                <input type="file" name="fileToUpload" id="fileToUpload">
+{#                <a href="{{ path('csv_reader') }}" class="btn btn-success btn-block">Importer fichier csv</a><br>#}
+                <input type="submit" value="Importer fichier csv" class="btn btn-success btn-block" name="submit">
+            </form>
+        </div>
+    </div>
 {% endblock %}
