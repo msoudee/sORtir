@@ -226,9 +226,12 @@ class SortieController extends AbstractController
     {
 
         $sortie = new Sortie();
-        $sortie->setDateDebut(new \DateTime());
 
-        $dateDeFin = new DateTime();
+
+        $sortie->setDateDebut(new DateTime('',new \DateTimeZone('Europe/Paris')));
+
+
+        $dateDeFin =new DateTime('',new \DateTimeZone('Europe/Paris'));
         $dateDeFin->modify("+1 day");
 
         $sortie->setDateCloture($dateDeFin);

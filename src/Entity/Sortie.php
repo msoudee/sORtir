@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -312,7 +313,7 @@ class Sortie
     
 
     public function getDateActuelle(){
-        return new \DateTime();
+        return new DateTime('',new \DateTimeZone('Europe/Paris'));
     }
 
 
