@@ -29,7 +29,20 @@
                 <label class="form-control" id="villeOrganisatrice">{{ app.user.site.libelle }}</label>
             </div>
 
-            {{ form_row(form_CreerSortie.ville) }}
+            <div class="row">
+                <div class="col-9">
+                    {{ form_row(form_CreerSortie.ville) }}
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="required">Nouveau</label>
+                        <button type="button" class="form-control btn btn-light" data-toggle="modal" data-target="#myModalCity">
+                            <img src="{{ asset('img/add_city.png') }}" height="90%">
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-9">
@@ -45,7 +58,7 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label class="required">Nouveau</label>
-                        <button type="button" class="form-control btn btn-light" data-toggle="modal" data-target="#myModal">
+                        <button type="button" class="form-control btn btn-light" data-toggle="modal" data-target="#myModalLieu">
                             <img src="{{ asset('img/add_location.png') }}" height="90%">
                         </button>
                     </div>
@@ -91,7 +104,7 @@
 
     {{ form_end(form_CreerSortie) }}
 
-    <div id="myModal" class="modal hide fade">
+    <div id="myModalLieu" class="modal hide fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,6 +134,29 @@
         </div>
     </div>
 
+    <div id="myModalCity" class="modal hide fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="display-4">Ajout ville</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    {{ form_start(formNouvelleVille) }}
+
+                    {{ form_row(formNouvelleVille.nom) }}
+                    {{ form_row(formNouvelleVille.codePostal) }}
+
+                    {{ form_end(formNouvelleVille) }}
+                    <button id="btnEnregistrerVille" class="btn btn-success btn-block my-4 " data-dismiss="modal">
+                        Enregistrer nouvelle ville
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="application/javascript">
         // A $( document ).ready() block.
         //$( document ).ready(chargementVille)
@@ -134,6 +170,11 @@
             $("#nouveau_lieu_rue").val("");
             $("#nouveau_lieu_latitude").val("");
             $("#nouveau_lieu_longitude").val("");
+        });
+        $("#btnEnregistrerVille").click(function(){
+            ajouterVille();
+            $("#nouvelle_ville_nom").val("");
+            $("#nouvelle_ville_codePostal").val("");
         });
 
 
@@ -209,6 +250,37 @@
                     }).prop("selected", true);
 
                     $('#creer_sortie_ville').change();
+                }
+            })
+        }
+
+        function ajouterVille() {
+            var nom = $("#enregistrer_ville_nom").val();
+            var cp = $("#enregistrer_ville_codePostal").val();
+
+            $.ajax({
+                url: 'ajax_nouvelle_ville',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "nom": nom,
+                    "cp": cp
+                },
+                async: true,
+                success: function (data) {
+                    $("#creer_sortie_ville").empty();
+                    for (var i = 0; i < data.villes.length; i++) {
+                        var id = data.villes[i].id;
+                        var nom = data.villes[i].nom;
+                        $("#creer_sortie_ville").append("<option value=" + id + " selected='selected'>" + nom + "</option>");
+                    }
+
+                    $("#nouveau_lieu_ville").empty();
+                    for (var i = 0; i < data.villes.length; i++) {
+                        var id = data.villes[i].id;
+                        var nom = data.villes[i].nom;
+                        $("#nouveau_lieu_ville").append("<option value=" + id + " selected='selected'>" + nom + "</option>");
+                    }
                 }
             })
         }

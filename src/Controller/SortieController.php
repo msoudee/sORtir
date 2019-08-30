@@ -9,6 +9,7 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\AnnulerSortieType;
+use App\Form\EnregistrerVilleType;
 use App\Form\FiltreType;
 use App\Form\NouveauLieuType;
 use DateTime;
@@ -277,8 +278,12 @@ class SortieController extends AbstractController
         $lieu = new Lieu();
         $formNouveauLieu = $this->createForm(NouveauLieuType::class, $lieu);
 
+        $newVille = new Ville();
+        $formNouvelleVille = $this->createForm(EnregistrerVilleType::class, $newVille);
+
         return $this->render('sortie/sortie_creer.html.twig', [
             'form_CreerSortie' => $sortieForm->createView(),
+            'formNouvelleVille' => $formNouvelleVille->createView(),
             'formNouveauLieu' => $formNouveauLieu->createView()
         ]);
     }
@@ -513,6 +518,33 @@ class SortieController extends AbstractController
         $response = new Response(json_encode(array(
             'newVille' => $lieu->getVille()->getId(),
             'newLieu' => $lieu->getNom()
+        )));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
+     * @Route("/ajax_nouvelle_ville", name="ajax_nouvelle_ville")
+     */
+    public function ajaxNouvelleVille(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Ville::class);
+
+        $ville = new Ville();
+
+        $ville->setNom($request->get('nom'));
+        $ville->setCodePostal($request->get('cp'));
+
+        $em->persist($ville);
+        $em->flush();
+
+        $villes = $repo->findAll();
+
+        $response = new Response(json_encode(array(
+            'newVille' => $ville->getId(),
+            'villes' => $villes
         )));
         $response->headers->set('Content-Type', 'application/json');
 
