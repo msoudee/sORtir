@@ -27,15 +27,20 @@
 
     </table>
     <div class="row">
-        <div class="col-3">
+        <div class="col-sm-3">
             <a href="{{ path('app_register') }}" class="btn btn-success btn-block">Ajouter un utilisateur</a><br>
         </div>
-        <div class="col-3">
+        <div class="col-sm-3 offset-sm-3">
             <form action="{{path('csv_reader')}}" method="post" enctype="multipart/form-data">
-                <input type="file" name="fileToUpload" id="fileToUpload">
-{#                <a href="{{ path('csv_reader') }}" class="btn btn-success btn-block">Importer fichier csv</a><br>#}
-                <input type="submit" value="Importer fichier csv" class="btn btn-success btn-block" name="submit">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload">
+                    <label class="custom-file-label" for="fileToUpload">Choose file</label>
+                </div>
+
             </form>
+        </div>
+        <div class="col-sm-3">
+            <input type="submit" value="Importer fichier csv" class="btn btn-success btn-block" name="submit">
         </div>
     </div>
 {% endblock %}
